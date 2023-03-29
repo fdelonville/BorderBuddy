@@ -1,0 +1,35 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+  # configuration de la datasource
+  datasource:
+    url: jdbc:postgresql://localhost:5432/border_buddy
+    username: postgres
+    password: Test1234=
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+  # Configuration de l'adresse email envoyant les messages.
+  # Diffère selon les serveurs utilisés. Configuration actuelle pour Gmail
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: materialloc.bot@gmail.com
+    password: qllnzgcjybdpjpqv # Test1234=
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+# configuration du chemin de base pour swagger
+springdoc:
+  swagger-ui:
+    path: /swagger
