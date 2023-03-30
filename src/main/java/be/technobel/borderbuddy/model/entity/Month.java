@@ -16,12 +16,16 @@ public class Month {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "start-date")
+    @Column(name = "start-date", nullable = false)
     private LocalDate startDate;
 
-    @Column(name = "end-date")
+    @Column(name = "end-date", nullable = false)
     private LocalDate endDate;
 
-    @OneToMany(mappedBy = "day-of-month")
+    @OneToMany(mappedBy = "month")
     private Set<Day> days = new HashSet<>();
+
+    public void addDay(Day day){
+        days.add(day);
+    }
 }

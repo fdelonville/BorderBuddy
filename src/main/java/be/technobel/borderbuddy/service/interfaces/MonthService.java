@@ -6,5 +6,5 @@ import java.time.LocalDate;
 
 public interface MonthService {
     void create(LocalDate startDate);
-    MonthDTO getOne(Long id);
+    MonthDTO getOne(LocalDate startDate);
 }

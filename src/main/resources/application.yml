@@ -1,7 +1,4 @@
 spring:
-  config:
-    activate:
-      on-profile: dev
   # configuration de la datasource
   datasource:
     url: jdbc:postgresql://localhost:5432/border_buddy
@@ -15,21 +12,32 @@ spring:
     properties:
       hibernate:
         format_sql: true
-  # Configuration de l'adresse email envoyant les messages.
-  # Diffère selon les serveurs utilisés. Configuration actuelle pour Gmail
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: materialloc.bot@gmail.com
-    password: qllnzgcjybdpjpqv # Test1234=
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
+#  # Configuration de l'adresse email envoyant les messages.
+#  # Diffère selon les serveurs utilisés. Configuration actuelle pour Gmail
+#  mail:
+#    host: smtp.gmail.com
+#    port: 587
+#    username: materialloc.bot@gmail.com
+#    password: qllnzgcjybdpjpqv # Test1234=
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enable: true
 
 # configuration du chemin de base pour swagger
 springdoc:
   swagger-ui:
     path: /swagger
+
+# prop custom pour l'implementation de JWT
+app:
+  security:
+    jwt:
+      access-expires-at: 900_000 # 15 min
+      refresh-expires-at: 2_592_000_000 # 30 jours
+      prefix: "Bearer "
+      auth-header: "authorization"
+      access-secret: s3cr3t
+      refresh-secret: s4cr4t

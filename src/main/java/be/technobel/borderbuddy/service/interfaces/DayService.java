@@ -1,12 +1,14 @@
 package be.technobel.borderbuddy.service.interfaces;
 
 import be.technobel.borderbuddy.model.dto.DayDTO;
+import be.technobel.borderbuddy.model.entity.Day;
+import be.technobel.borderbuddy.model.entity.Month;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface DayService {
-    List<DayDTO> getAllBetweenDates(Date date1, Date date2);
+    List<DayDTO> getAllBetweenDates(LocalDate date1, LocalDate date2);
     List<DayDTO>getAllIncomplete();
-    void create(Date date);
+    Day create(LocalDate date, Month month);
 }
