@@ -1,6 +1,7 @@
 package be.technobel.borderbuddy.service.impl;
 
 import be.technobel.borderbuddy.model.Status;
+import be.technobel.borderbuddy.model.Type;
 import be.technobel.borderbuddy.model.dto.DayDTO;
 import be.technobel.borderbuddy.model.entity.Day;
 import be.technobel.borderbuddy.model.entity.Month;
@@ -8,6 +9,7 @@ import be.technobel.borderbuddy.repository.DayRepository;
 import be.technobel.borderbuddy.service.interfaces.DayService;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -34,7 +36,11 @@ public class DayServiceImpl implements DayService {
     public Day create(LocalDate date, Month month) {
         Day day = new Day();
         day.setDayDate(date);
-        day.setStatus(Status.PENDING);
+        if(date.getDayOfWeek().equals(DayOfWeek.SATURDAY)||date.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
+            day.setType(Type.PUBLIC_HOLIDAY_OR_WEEKEND);
+            day.setStatus(Status.VALID);
+        }
+        else day.setStatus(Status.PENDING);
         day.setMonth(month);
         dayRepository.save(day);
         return day;

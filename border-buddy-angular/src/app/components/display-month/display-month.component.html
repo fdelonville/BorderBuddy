@@ -1,0 +1,6 @@
+<h2> {{month.startDate}} - {{month.endDate}} </h2>
+<ul>
+  <li *ngFor = "let day of month.days">
+    {{day.dayDate}} {{day.status}}
+  </li>
+</ul>

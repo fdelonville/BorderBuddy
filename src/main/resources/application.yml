@@ -3,7 +3,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/border_buddy
     username: postgres
-    password: Test1234=
+    password: test1234=
     driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: true

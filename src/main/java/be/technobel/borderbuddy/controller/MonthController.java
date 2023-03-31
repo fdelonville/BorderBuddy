@@ -17,18 +17,26 @@ public class MonthController {
         this.monthService = monthService;
     }
 
-//    @GetMapping("/{id:[0-9]+}")
-//    public MonthDTO displayMonthByID(@PathVariable long id){
-//        return monthService.getOne(id);
-//    }
-
     @GetMapping("/current")
     public MonthDTO displayCurrentMonth(){
         return monthService.getOne(LocalDate.now().withDayOfMonth(1));
     }
 
-    @GetMapping("/new")
-    public void newMonth(){
-        monthService.create(LocalDate.now().withDayOfMonth(1));
+    @GetMapping("/display")
+    public MonthDTO displayByDate(@RequestParam LocalDate date){
+        return monthService.getOne(date.withDayOfMonth(1));
+    }
+
+    @GetMapping("/new-month")
+    public void newMonth(@RequestParam LocalDate date){
+        monthService.create(date.withDayOfMonth(1));
+    }
+
+    @GetMapping("/new-period")
+    public void newPeriod(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate){
+        do{
+            monthService.create(startDate.withDayOfMonth(1));
+            startDate = startDate.plusMonths(1);
+        }while (startDate.isBefore(endDate));
     }
 }

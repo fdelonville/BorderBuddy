@@ -4,5 +4,6 @@ public enum Type {
     LUX,
     BEL,
     SICK,
-    HOLIDAY
+    DAY_OFF,
+    PUBLIC_HOLIDAY_OR_WEEKEND
 }
