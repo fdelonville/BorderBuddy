@@ -5,8 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -23,7 +23,7 @@ public class Month {
     private LocalDate endDate;
 
     @OneToMany(mappedBy = "month")
-    private Set<Day> days = new HashSet<>();
+    private List<Day> days = new ArrayList<>();
 
     public void addDay(Day day){
         days.add(day);

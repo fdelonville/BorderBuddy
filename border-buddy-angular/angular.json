@@ -12,6 +12,7 @@
       },
       "root": "",
       "sourceRoot": "src",
+      "sourceLocale": "fr-FR",
       "prefix": "app",
       "architect": {
         "build": {

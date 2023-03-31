@@ -27,17 +27,19 @@ public class MonthServiceImpl implements MonthService {
         Month month = new Month();
         month.setStartDate(startDate);
         month.setEndDate(startDate.plusDays(startDate.lengthOfMonth()-1));
-        monthRepository.save(month);
-        for (int i = 0; i < startDate.lengthOfMonth(); i++){
-            Day day = dayService.create(startDate.plusDays(i),month);
-            month.addDay(day);
+        if(monthRepository.findByStartDate(startDate).isEmpty()) {
+            monthRepository.save(month);
+            for (int i = 0; i < startDate.lengthOfMonth(); i++) {
+                Day day = dayService.create(startDate.plusDays(i), month);
+                month.addDay(day);
+            }
+            monthRepository.save(month);
         }
-        monthRepository.save(month);
     }
 
     @Override
     public MonthDTO getOne(LocalDate startDate) {
-        Month month = monthRepository.findByStartDate(startDate);
+        Month month = monthRepository.findByStartDate(startDate).orElseThrow();
         return MonthDTO.toDto(month);
     }
 }
