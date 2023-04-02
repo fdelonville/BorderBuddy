@@ -37,8 +37,7 @@ public class DayServiceImpl implements DayService {
         Day day = new Day();
         day.setDayDate(date);
         if(date.getDayOfWeek().equals(DayOfWeek.SATURDAY)||date.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
-            day.setType(Type.PUBLIC_HOLIDAY_OR_WEEKEND);
-            day.setStatus(Status.VALID);
+            day.setStatus(Status.PUBLIC_HOLIDAY_OR_WEEKEND);
         }
         else day.setStatus(Status.PENDING);
         day.setMonth(month);
