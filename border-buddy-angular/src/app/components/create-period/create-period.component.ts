@@ -11,6 +11,7 @@ export class CreatePeriodComponent {
   form: FormGroup
   startDate!: string
   endDate!: string
+  confirmation: string = ''
 
   constructor(private readonly monthService : MonthService) {
     this.form = new FormGroup({
@@ -24,7 +25,13 @@ export class CreatePeriodComponent {
     this.endDate = this.form.get('endDate')?.value
     this.monthService.createPeriod(this.startDate,this.endDate)
       .subscribe(
-        {next: () => this.form.reset()}
+        {
+          next: () => {
+            this.form.reset()
+            this.confirmation = 'Période initialisée'
+          }
+        }
+
       )
   }
 }

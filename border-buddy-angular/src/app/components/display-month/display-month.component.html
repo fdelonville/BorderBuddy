@@ -1,9 +1,9 @@
 <h2 *ngIf="loading">Loading...</h2>
 <div *ngIf="!loading && !error">
   <h2> {{month.startDate | date:'MMMM y':undefined :'fr-BE' | titlecase}} </h2>
-  <ul>
-    <li *ngFor = "let day of month.days">
-     <p class =" {{day.status | lowercase}} "> {{day.dayDate | date : 'EEEE': undefined : 'fr-BE'}} {{day.dayDate | date: 'd'}} </p>
+  <ul class="list-group list">
+    <li *ngFor = "let day of month.days; let i = index" class="list-group-item">
+     <button class = " {{day.status | lowercase}} " (click)="onClick(day.dayDate)"> {{day.dayDate | date : 'EEEE': undefined : 'fr-BE'}} {{day.dayDate | date: 'd'}} </button>
     </li>
   </ul>
 </div>
@@ -12,6 +12,7 @@
   <button routerLink="/init" class = "btn btn-secondary">Initialiser la période concernée</button>
 </div>
 <br>
+
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <input type ="date" formControlName = "date">
   <button type = "submit" class = "btn btn-primary">Envoyer</button>

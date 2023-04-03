@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {MonthService} from "../../services/month.service";
 import {Month} from "../../models/month.model";
 import {FormControl, FormGroup} from "@angular/forms";
+import {Day} from "../../models/day.model";
 
 @Component({
   selector: 'app-display-month',
@@ -11,8 +12,11 @@ import {FormControl, FormGroup} from "@angular/forms";
 export class DisplayMonthComponent implements OnInit {
 
   month!: Month
-  loading: boolean = false
+  loading!: boolean
   error!: boolean
+  today: string = new Date(Date.now()).toISOString().substring(0,10)
+  startPosition!: number
+  clicked: boolean = false
 
   form: FormGroup
   constructor(private readonly monthService : MonthService){
@@ -21,13 +25,10 @@ export class DisplayMonthComponent implements OnInit {
     })
   }
 
-
-  ngOnInit(): void {
+  getMonth(date: string): void{
     this.loading = true
     this.error = true
-    // let newDate = new Date(Date.now())
-    // console.log(newDate.toISOString().substring(0,10))
-    this.monthService.getCurrent().subscribe(
+    this.monthService.getOne(date).subscribe(
       {next:(m:Month) => {
           this.month = m
           this.month.days.sort((a,b) => (a.id > b.id) ? 1 : -1)
@@ -42,21 +43,27 @@ export class DisplayMonthComponent implements OnInit {
     )
   }
 
+
+  ngOnInit(): void {
+    this.getMonth(this.today)
+  }
+
   onSubmit() {
-    this.loading = true
-    this.error = true
-    this.monthService.getOne(this.form.get('date')?.value).subscribe(
-      {next:(m:Month) => {
-          this.month = m
-          this.month.days.sort((a,b) => (a.id > b.id) ? 1 : -1)
-          this.loading = false
-          this.error = false
-        },
-        error:()=>{
-          this.loading = false
-          this.error = true
-        }
-      }
-    )
+    this.getMonth(this.form.get('date')?.value)
+  }
+
+  onClick(date: Date) {
+    let date1!: Date
+    let date2!: Date
+    if(!this.clicked){
+      date1 = date
+      this.clicked = true
+    }
+    else{
+      date2 = date
+      console.log (date1)
+      console.log (date2)
+      this.clicked = false
+    }
   }
 }

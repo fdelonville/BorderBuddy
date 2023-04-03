@@ -17,11 +17,6 @@ public class MonthController {
         this.monthService = monthService;
     }
 
-    @GetMapping("/current")
-    public MonthDTO displayCurrentMonth(){
-        return monthService.getOne(LocalDate.now().withDayOfMonth(1));
-    }
-
     @GetMapping("/display")
     public MonthDTO displayByDate(@RequestParam LocalDate date){
         return monthService.getOne(date.withDayOfMonth(1));
