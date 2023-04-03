@@ -11,7 +11,7 @@ import {FormControl, FormGroup} from "@angular/forms";
 export class DisplayMonthComponent implements OnInit {
 
   month!: Month
-  loading!: boolean
+  loading: boolean = false
   error!: boolean
 
   form: FormGroup
@@ -20,6 +20,7 @@ export class DisplayMonthComponent implements OnInit {
       'date': new FormControl()
     })
   }
+
 
   ngOnInit(): void {
     this.loading = true
@@ -32,6 +33,10 @@ export class DisplayMonthComponent implements OnInit {
           this.month.days.sort((a,b) => (a.id > b.id) ? 1 : -1)
           this.loading = false
           this.error = false
+        },
+        error:()=>{
+          this.loading = false
+          this.error = true
         }
       }
     )

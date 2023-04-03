@@ -27,12 +27,12 @@ public class MonthController {
         return monthService.getOne(date.withDayOfMonth(1));
     }
 
-    @GetMapping("/new-month")
+    @PostMapping("/new-month")
     public void newMonth(@RequestParam LocalDate date){
         monthService.create(date.withDayOfMonth(1));
     }
 
-    @GetMapping("/new-period")
+    @PostMapping("/new-period")
     public void newPeriod(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate){
         do{
             monthService.create(startDate.withDayOfMonth(1));

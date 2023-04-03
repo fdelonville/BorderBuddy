@@ -15,4 +15,9 @@ export class MonthService {
   getCurrent(){
     return this.httpClient.get<Month>('http://localhost:8080/api/month/current')
   }
+
+  createPeriod(startDate: string, endDate: string){
+    const params = new HttpParams().set('startDate',startDate).set('endDate',endDate)
+    return this.httpClient.post('http://localhost:8080/api/month/new-period',params)
+  }
 }

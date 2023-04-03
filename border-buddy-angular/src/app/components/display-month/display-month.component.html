@@ -7,8 +7,12 @@
     </li>
   </ul>
 </div>
-<h2 *ngIf="error && !loading">Erreur : mois inexistant</h2>
+<div *ngIf="error && !loading">
+  <h2>Erreur : mois inexistant</h2>
+  <button routerLink="/init" class = "btn btn-secondary">Initialiser la période concernée</button>
+</div>
+<br>
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <input type ="date" formControlName = "date">
-  <button type = "submit">Envoyer</button>
+  <button type = "submit" class = "btn btn-primary">Envoyer</button>
 </form>
