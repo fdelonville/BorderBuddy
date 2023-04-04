@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MonthService} from "../../services/month.service";
 
 @Component({
@@ -15,8 +15,8 @@ export class CreatePeriodComponent {
 
   constructor(private readonly monthService : MonthService) {
     this.form = new FormGroup({
-      'startDate' : new FormControl(),
-      'endDate' : new FormControl()
+      'startDate' : new FormControl('',Validators.required),
+      'endDate' : new FormControl('',Validators.required)
     })
   }
 

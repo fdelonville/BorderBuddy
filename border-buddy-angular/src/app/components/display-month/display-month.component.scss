@@ -11,3 +11,14 @@
 .public_holiday_or_weekend{
   background-color: rgba(120,120,120,0.5);
 }
+table {
+  table-layout: fixed ;
+  width: 100% ;
+}
+td {
+  width: 14% ;
+}
+#calendar {
+  width: 80%;
+  margin: auto;
+}

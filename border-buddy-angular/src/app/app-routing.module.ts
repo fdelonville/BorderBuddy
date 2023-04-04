@@ -4,12 +4,14 @@ import {DisplayMonthComponent} from "./components/display-month/display-month.co
 import {AccueilComponent} from "./components/accueil/accueil.component";
 import {CreatePeriodComponent} from "./components/create-period/create-period.component";
 import {UploadComponent} from "./components/upload/upload.component";
+import {ChooseTypeComponent} from "./components/choose-type/choose-type.component";
 
 const routes: Routes = [
   {path:'recap', component: DisplayMonthComponent},
   {path:'accueil', component: AccueilComponent},
   {path:'init', component: CreatePeriodComponent},
   {path:'upload', component: UploadComponent},
+  {path:'type', component: ChooseTypeComponent},
   {path:'', component: AccueilComponent},
 ];
 

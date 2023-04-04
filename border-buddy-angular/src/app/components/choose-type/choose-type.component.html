@@ -1,0 +1,14 @@
+<br>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <label for="date1">Date de début :</label>
+  <input type="date" id = "date1" formControlName="startDate">
+  <label for="date2">Date de fin :</label>
+  <input type="date" id = "date2" formControlName="endDate">
+  <br>
+  <label for="type">Choisir un type</label>
+  <select id = "type" formControlName="type">
+    <option *ngFor="let type of types"  value="{{type}}"> {{type}} </option>
+  </select>
+  <br>
+  <input type="submit" class ="btn btn-primary" value="Confirmer">
+</form>

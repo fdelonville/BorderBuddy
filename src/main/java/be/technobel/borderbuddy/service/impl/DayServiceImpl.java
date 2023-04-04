@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -43,5 +45,25 @@ public class DayServiceImpl implements DayService {
         day.setMonth(month);
         dayRepository.save(day);
         return day;
+    }
+
+    @Override
+    public List<String> getAllTypes() {
+        return Arrays.stream(Type.values()).map(Enum::toString).toList();
+    }
+
+    @Override
+    public void setDayRangeType(LocalDate date1, LocalDate date2, String type) {
+        if(date2.isAfter(date1)) {
+            dayRepository.findAllByDayDateBetween(date1, date2).stream().map(day -> {
+                if (!day.getStatus().equals(Status.VALID) && !day.getStatus().equals(Status.PUBLIC_HOLIDAY_OR_WEEKEND)) {
+                    day.setType(Type.valueOf(type));
+                    day.setStatus(Status.TYPED);
+                    dayRepository.save(day);
+                }
+                return null;
+            });
+        }
+        else throw(new RuntimeException());
     }
 }

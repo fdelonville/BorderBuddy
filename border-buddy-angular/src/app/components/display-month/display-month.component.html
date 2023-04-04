@@ -1,50 +1,45 @@
 <h2 *ngIf="loading">Loading...</h2>
-<div *ngIf="!loading && !error">
+<div *ngIf="!loading && !error" id = "calendar">
   <h2> {{month.startDate | date:'MMMM y':undefined :'fr-BE' | titlecase}} </h2>
-  <ul class="list-group list">
-    <li *ngFor = "let day of month.days; let i = index" class="list-group-item">
-     <button class = " {{day.status | lowercase}} " (click)="onClick(day.dayDate)"> {{day.dayDate | date : 'EEEE': undefined : 'fr-BE'}} {{day.dayDate | date: 'd'}} </button>
-    </li>
-  </ul>
+  <table class = "table table-bordered">
+    <thead>
+    <td>Lundi</td>
+    <td>Mardi</td>
+    <td>Mercredi</td>
+    <td>Jeudi</td>
+    <td>Vendredi</td>
+    <td>Samedi</td>
+    <td>Dimanche</td>
+    </thead>
+    <tbody>
+    <tr>
+      <td *ngFor="let day of emptyBeginning"> </td><td *ngFor="let day of weeks[1]" class = " {{day.status | lowercase}} "> {{day.dayDate | date: 'd'}} </td>
+    </tr>
+    <tr>
+      <td *ngFor="let day of weeks[2]" class = " {{day.status | lowercase}} "> {{day.dayDate | date: 'd'}} </td>
+    </tr>
+    <tr>
+      <td *ngFor="let day of weeks[3]" class = " {{day.status | lowercase}} "> {{day.dayDate | date: 'd'}} </td>
+    </tr>
+    <tr>
+      <td *ngFor="let day of weeks[4]" class = " {{day.status | lowercase}} "> {{day.dayDate | date: 'd'}} </td>
+    </tr>
+    <tr *ngIf="weeks[5]!=undefined">
+      <td *ngFor="let day of weeks[5]" class = " {{day.status | lowercase}} "> {{day.dayDate | date: 'd'}} </td>
+    </tr>
+    <tr *ngIf="weeks[6]!=undefined">
+      <td *ngFor="let day of weeks[6]" class = " {{day.status | lowercase}} "> {{day.dayDate | date: 'd'}} </td>
+    </tr>
+    </tbody>
+  </table>
+  <br>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <input type ="date" formControlName = "date">
+    <button type = "submit" class = "btn btn-primary">Envoyer</button>
+  </form>
 </div>
 <div *ngIf="error && !loading">
   <h2>Erreur : mois inexistant</h2>
   <button routerLink="/init" class = "btn btn-secondary">Initialiser la période concernée</button>
 </div>
-<br>
-<table class = "table table-hover table-bordered">
-  <thead>
-  <td>Lundi</td>
-  <td>Mardi</td>
-  <td>Mercredi</td>
-  <td>Jeudi</td>
-  <td>Vendredi</td>
-  <td>Samedi</td>
-  <td>Dimanche</td>
-  </thead>
-  <tbody>
-  <tr>
-    <td *ngFor="let day of emptyBeginning"> </td><td *ngFor="let day of weeks[1]" class = " {{day.status | lowercase}} "> {{day.dayDate | date: 'd'}} </td>
-  </tr>
-  <tr>
-    <td *ngFor="let day of weeks[2]" class = " {{day.status | lowercase}} "> {{day.dayDate | date: 'd'}} </td>
-  </tr>
-  <tr>
-    <td *ngFor="let day of weeks[3]" class = " {{day.status | lowercase}} "> {{day.dayDate | date: 'd'}} </td>
-  </tr>
-  <tr>
-    <td *ngFor="let day of weeks[4]" class = " {{day.status | lowercase}} "> {{day.dayDate | date: 'd'}} </td>
-  </tr>
-  <tr *ngIf="weeks[5]!=undefined">
-    <td *ngFor="let day of weeks[5]" class = " {{day.status | lowercase}} "> {{day.dayDate | date: 'd'}} </td>
-  </tr>
-  <tr *ngIf="weeks[6]!=undefined">
-    <td *ngFor="let day of weeks[6]" class = " {{day.status | lowercase}} "> {{day.dayDate | date: 'd'}} </td>
-  </tr>
-  </tbody>
-</table>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <input type ="date" formControlName = "date">
-  <button type = "submit" class = "btn btn-primary">Envoyer</button>
-</form>
