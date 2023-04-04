@@ -12,6 +12,37 @@
   <button routerLink="/init" class = "btn btn-secondary">Initialiser la période concernée</button>
 </div>
 <br>
+<table class = "table table-hover table-bordered">
+  <thead>
+  <td>Lundi</td>
+  <td>Mardi</td>
+  <td>Mercredi</td>
+  <td>Jeudi</td>
+  <td>Vendredi</td>
+  <td>Samedi</td>
+  <td>Dimanche</td>
+  </thead>
+  <tbody>
+  <tr>
+    <td *ngFor="let day of emptyBeginning"> </td><td *ngFor="let day of weeks[1]" class = " {{day.status | lowercase}} "> {{day.dayDate | date: 'd'}} </td>
+  </tr>
+  <tr>
+    <td *ngFor="let day of weeks[2]" class = " {{day.status | lowercase}} "> {{day.dayDate | date: 'd'}} </td>
+  </tr>
+  <tr>
+    <td *ngFor="let day of weeks[3]" class = " {{day.status | lowercase}} "> {{day.dayDate | date: 'd'}} </td>
+  </tr>
+  <tr>
+    <td *ngFor="let day of weeks[4]" class = " {{day.status | lowercase}} "> {{day.dayDate | date: 'd'}} </td>
+  </tr>
+  <tr *ngIf="weeks[5]!=undefined">
+    <td *ngFor="let day of weeks[5]" class = " {{day.status | lowercase}} "> {{day.dayDate | date: 'd'}} </td>
+  </tr>
+  <tr *ngIf="weeks[6]!=undefined">
+    <td *ngFor="let day of weeks[6]" class = " {{day.status | lowercase}} "> {{day.dayDate | date: 'd'}} </td>
+  </tr>
+  </tbody>
+</table>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <input type ="date" formControlName = "date">

@@ -17,6 +17,8 @@ export class DisplayMonthComponent implements OnInit {
   today: string = new Date(Date.now()).toISOString().substring(0,10)
   startPosition!: number
   clicked: boolean = false
+  emptyBeginning: string[] = []
+  weeks: Day[][] = []
 
   form: FormGroup
   constructor(private readonly monthService : MonthService){
@@ -25,17 +27,43 @@ export class DisplayMonthComponent implements OnInit {
     })
   }
 
+  splitMonth(): void{
+    let dayIndex: number = 0
+    for(let i: number = 1; i < this.startPosition; i++){
+      let emptyDay: string = ''
+      this.emptyBeginning.push(emptyDay)
+    }
+    this.weeks[1] = []
+    for(let i: number = this.startPosition; i <= 7; i++){
+      this.weeks[1].push(this.month.days[dayIndex])
+      dayIndex++
+    }
+    for(let i: number = 2; i < 7; i++){
+      this.weeks[i] = []
+      for(let j: number = 0; j < 7 && dayIndex < this.month.days.length; j++){
+        this.weeks[i].push(this.month.days[dayIndex])
+        dayIndex++
+      }
+      if(dayIndex >= this.month.days.length) break
+    }
+  }
+
   getMonth(date: string): void{
     this.loading = true
     this.error = true
+    this.emptyBeginning = []
     this.monthService.getOne(date).subscribe(
       {next:(m:Month) => {
           this.month = m
           this.month.days.sort((a,b) => (a.id > b.id) ? 1 : -1)
+          const startDate = new Date(this.month.startDate)
+          this.startPosition = startDate.getDay()
+          if(this.startPosition === 0) this.startPosition = 7
+          this.splitMonth()
           this.loading = false
           this.error = false
         },
-        error:()=>{
+        error:()=> {
           this.loading = false
           this.error = true
         }
