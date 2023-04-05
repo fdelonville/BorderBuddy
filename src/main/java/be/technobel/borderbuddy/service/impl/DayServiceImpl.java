@@ -54,16 +54,18 @@ public class DayServiceImpl implements DayService {
 
     @Override
     public void setDayRangeType(LocalDate date1, LocalDate date2, String type) {
-        if(date2.isAfter(date1)) {
-            dayRepository.findAllByDayDateBetween(date1, date2).stream().map(day -> {
-                if (!day.getStatus().equals(Status.VALID) && !day.getStatus().equals(Status.PUBLIC_HOLIDAY_OR_WEEKEND)) {
-                    day.setType(Type.valueOf(type));
-                    day.setStatus(Status.TYPED);
-                    dayRepository.save(day);
-                }
-                return null;
-            });
+        if(date2.isBefore(date1)) {
+            LocalDate date3 = date1;
+            date1 = date2;
+            date2 = date3;
         }
-        else throw(new RuntimeException());
+        List<Day> dayList = dayRepository.findAllByDayDateBetween(date1, date2);
+        dayList.forEach(day -> {
+            if((day.getStatus()!= Status.VALID) && (day.getStatus() != Status.PUBLIC_HOLIDAY_OR_WEEKEND)){
+                day.setType(Type.valueOf(type));
+                day.setStatus(Status.TYPED);
+                dayRepository.save(day);
+            }
+        });
     }
 }

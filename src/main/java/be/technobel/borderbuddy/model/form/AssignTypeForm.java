@@ -1,16 +1,18 @@
 package be.technobel.borderbuddy.model.form;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
 
 @Data
 public class AssignTypeForm {
-    @NotBlank
+
+    @NotNull
     private LocalDate startDate;
 
-    @NotBlank
+    @NotNull
     private LocalDate endDate;
 
     @NotBlank

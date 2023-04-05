@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {MonthService} from "../../services/month.service";
 import {Month} from "../../models/month.model";
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Day} from "../../models/day.model";
+import {DayService} from "../../services/day.service";
 
 @Component({
   selector: 'app-display-month',
@@ -19,11 +20,20 @@ export class DisplayMonthComponent implements OnInit {
   clicked: boolean = false
   emptyBeginning: string[] = []
   weeks: Day[][] = []
+  clickedDate1!: Date
+  clickedDate2!: Date
+  types!: string[]
+  monthForm: FormGroup
+  typeForm: FormGroup
 
-  form: FormGroup
-  constructor(private readonly monthService : MonthService){
-    this.form = new FormGroup({
+  constructor(private readonly monthService : MonthService, private readonly dayService : DayService){
+    this.monthForm = new FormGroup({
       'date': new FormControl()
+    })
+    this.typeForm = new FormGroup({
+      'startDate': new FormControl(),
+      'endDate': new FormControl(),
+      'type': new FormControl('',Validators.required)
     })
   }
 
@@ -74,24 +84,37 @@ export class DisplayMonthComponent implements OnInit {
 
   ngOnInit(): void {
     this.getMonth(this.today)
+    this.dayService.getAllTypes().subscribe(
+      {next:(t:any)=>this.types=t}
+    )
   }
 
-  onSubmit() {
-    this.getMonth(this.form.get('date')?.value)
+  onSubmitMonth() {
+    this.getMonth(this.monthForm.get('date')?.value)
   }
 
   onClick(date: Date) {
-    let date1!: Date
-    let date2!: Date
     if(!this.clicked){
-      date1 = date
+      this.clickedDate1 = date
       this.clicked = true
     }
     else{
-      date2 = date
-      console.log (date1)
-      console.log (date2)
+      this.clickedDate2 = date
       this.clicked = false
+    }
+  }
+
+  onSubmitType() {
+    if(this.typeForm.valid){
+      this.typeForm.patchValue({
+        'startDate': this.clickedDate1,
+        'endDate': this.clickedDate2
+      })
+      this.dayService.assignType(this.typeForm.value).subscribe({next:()=> {
+          this.typeForm.reset()
+          this.getMonth(new Date(this.month.startDate).toISOString().substring(0,10))
+        }
+      })
     }
   }
 }

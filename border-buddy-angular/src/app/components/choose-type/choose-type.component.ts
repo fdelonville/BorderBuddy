@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {DayService} from "../../services/day.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {AssignTypeForm} from "../../models/assign-type.form";
 
 @Component({
   selector: 'app-choose-type',
@@ -28,8 +27,7 @@ export class ChooseTypeComponent implements OnInit {
 
   onSubmit() {
     if(this.form.valid){
-      let assignForm : AssignTypeForm
-      this.dayService.assignType(this.form).subscribe({next:()=> {
+      this.dayService.assignType(this.form.value).subscribe({next:()=> {
         this.form.reset()
         console.log('ok')
         }

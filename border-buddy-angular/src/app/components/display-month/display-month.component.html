@@ -12,28 +12,23 @@
     <td>Dimanche</td>
     </thead>
     <tbody>
-    <tr>
-      <td *ngFor="let day of emptyBeginning"> </td><td *ngFor="let day of weeks[1]" class = " {{day.status | lowercase}} "> {{day.dayDate | date: 'd'}} </td>
-    </tr>
-    <tr>
-      <td *ngFor="let day of weeks[2]" class = " {{day.status | lowercase}} "> {{day.dayDate | date: 'd'}} </td>
-    </tr>
-    <tr>
-      <td *ngFor="let day of weeks[3]" class = " {{day.status | lowercase}} "> {{day.dayDate | date: 'd'}} </td>
-    </tr>
-    <tr>
-      <td *ngFor="let day of weeks[4]" class = " {{day.status | lowercase}} "> {{day.dayDate | date: 'd'}} </td>
-    </tr>
-    <tr *ngIf="weeks[5]!=undefined">
-      <td *ngFor="let day of weeks[5]" class = " {{day.status | lowercase}} "> {{day.dayDate | date: 'd'}} </td>
-    </tr>
-    <tr *ngIf="weeks[6]!=undefined">
-      <td *ngFor="let day of weeks[6]" class = " {{day.status | lowercase}} "> {{day.dayDate | date: 'd'}} </td>
+    <tr *ngFor="let week of weeks; let i = index">
+      <ng-container *ngIf = "i === 1"><td *ngFor="let day of emptyBeginning"> </td></ng-container>
+      <td *ngFor="let day of week" class = " {{day.status | lowercase}} " (click)="onClick(day.dayDate)"> {{day.dayDate | date: 'd'}} </td>
     </tr>
     </tbody>
   </table>
   <br>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <form *ngIf="clickedDate2" [formGroup]="typeForm" (ngSubmit)="onSubmitType()">
+    <label for="type">Choisir un type</label>
+    <select id = "type" formControlName="type">
+      <option *ngFor="let type of types"  value="{{type}}"> {{type}} </option>
+    </select>
+    <button type = "submit" class = "btn btn-primary">Confirmer</button>
+  </form>
+  <br>
+  <h3>Afficher un autre mois</h3>
+  <form [formGroup]="monthForm" (ngSubmit)="onSubmitMonth()">
     <input type ="date" formControlName = "date">
     <button type = "submit" class = "btn btn-primary">Envoyer</button>
   </form>
@@ -42,4 +37,3 @@
   <h2>Erreur : mois inexistant</h2>
   <button routerLink="/init" class = "btn btn-secondary">Initialiser la période concernée</button>
 </div>
-
