@@ -17,11 +17,10 @@ export class DisplayMonthComponent implements OnInit {
   error!: boolean
   today: string = new Date(Date.now()).toISOString().substring(0,10)
   startPosition!: number
-  clicked: boolean = false
   emptyBeginning: string[] = []
   weeks: Day[][] = []
-  clickedDate1!: Date
-  clickedDate2!: Date
+  clickedDate1?: Date
+  clickedDate2?: Date
   types!: string[]
   monthForm: FormGroup
   typeForm: FormGroup
@@ -45,12 +44,14 @@ export class DisplayMonthComponent implements OnInit {
     }
     this.weeks[1] = []
     for(let i: number = this.startPosition; i <= 7; i++){
+      this.month.days[dayIndex].selected = false
       this.weeks[1].push(this.month.days[dayIndex])
       dayIndex++
     }
     for(let i: number = 2; i < 7; i++){
       this.weeks[i] = []
       for(let j: number = 0; j < 7 && dayIndex < this.month.days.length; j++){
+        this.month.days[dayIndex].selected = false
         this.weeks[i].push(this.month.days[dayIndex])
         dayIndex++
       }
@@ -93,19 +94,25 @@ export class DisplayMonthComponent implements OnInit {
     this.getMonth(this.monthForm.get('date')?.value)
   }
 
-  onClick(date: Date) {
-    if(!this.clicked){
-      this.clickedDate1 = date
-      this.clicked = true
-    }
-    else{
-      this.clickedDate2 = date
-      this.clicked = false
-    }
+  onClick(day: Day) {
+      if (this.clickedDate1 == undefined) {
+        this.clickedDate1 = day.dayDate
+        day.selected = true
+      }
+      else if (this.clickedDate2 == undefined) {
+        this.clickedDate2 = day.dayDate
+        day.selected = true
+      }
+      else{
+        this.clickedDate1 = undefined
+        this.clickedDate2 = undefined
+        this.month.days.forEach(day => day.selected = false)
+      }
   }
 
   onSubmitType() {
-    if(this.typeForm.valid){
+    if(this.typeForm.valid && this.clickedDate1){
+      if(!this.clickedDate2) this.clickedDate2 = this.clickedDate1
       this.typeForm.patchValue({
         'startDate': this.clickedDate1,
         'endDate': this.clickedDate2
@@ -113,6 +120,8 @@ export class DisplayMonthComponent implements OnInit {
       this.dayService.assignType(this.typeForm.value).subscribe({next:()=> {
           this.typeForm.reset()
           this.getMonth(new Date(this.month.startDate).toISOString().substring(0,10))
+          this.clickedDate1 = undefined
+          this.clickedDate2 = undefined
         }
       })
     }

@@ -7,16 +7,24 @@
 .valid{
   background-color: rgba(0,255,0,0.5);
 }
-
 .public_holiday_or_weekend{
-  background-color: rgba(120,120,120,0.5);
+  background-color: rgba(150,150,220,0.5);
 }
+.selected{
+  background-color: rgba(0,0,255,0.5);
+  border: 2px solid cyan;
+}
+
+
 table {
   table-layout: fixed ;
   width: 100% ;
 }
 td {
   width: 14% ;
+}
+td p {
+  height: 10vh;
 }
 #calendar {
   width: 80%;

@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {DayService} from "../../services/day.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {parseEnum} from "@angular/compiler-cli/linker/src/file_linker/partial_linkers/util";
 
 @Component({
   selector: 'app-choose-type',
@@ -21,7 +22,10 @@ export class ChooseTypeComponent implements OnInit {
 
   ngOnInit(): void {
     this.dayService.getAllTypes().subscribe(
-      {next:(t:any)=>this.types=t}
+      {next:(t:any)=>{
+        this.types=t
+        enum Type{}
+      }}
     )
   }
 

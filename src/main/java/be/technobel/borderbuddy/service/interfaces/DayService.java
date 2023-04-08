@@ -1,5 +1,6 @@
 package be.technobel.borderbuddy.service.interfaces;
 
+import be.technobel.borderbuddy.model.Type;
 import be.technobel.borderbuddy.model.dto.DayDTO;
 import be.technobel.borderbuddy.model.entity.Day;
 import be.technobel.borderbuddy.model.entity.Month;
@@ -11,5 +12,5 @@ public interface DayService {
     List<DayDTO> getAllIncomplete();
     Day create(LocalDate date, Month month);
     List<String> getAllTypes();
-    void setDayRangeType(LocalDate date1, LocalDate date2, String type);
+    void setDayRangeType(LocalDate date1, LocalDate date2, Type type);
 }
