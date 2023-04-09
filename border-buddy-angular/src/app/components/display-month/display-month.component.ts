@@ -102,11 +102,14 @@ export class DisplayMonthComponent implements OnInit {
       else if (this.clickedDate2 == undefined) {
         this.clickedDate2 = day.dayDate
         day.selected = true
+        this.month.days.forEach(d => {
+          if(this.clickedDate1 && this.clickedDate2 && (d.dayDate > this.clickedDate1 && d.dayDate < this.clickedDate2)) d.selected = true
+        })
       }
       else{
         this.clickedDate1 = undefined
         this.clickedDate2 = undefined
-        this.month.days.forEach(day => day.selected = false)
+        this.month.days.forEach(d => d.selected = false)
       }
   }
 
