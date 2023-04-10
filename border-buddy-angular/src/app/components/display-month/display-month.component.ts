@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {MonthService} from "../../services/month.service";
 import {Month} from "../../models/month.model";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
@@ -10,12 +10,14 @@ import {DayService} from "../../services/day.service";
   templateUrl: './display-month.component.html',
   styleUrls: ['./display-month.component.scss']
 })
-export class DisplayMonthComponent implements OnInit {
+export class DisplayMonthComponent implements OnInit, AfterViewInit {
 
   month!: Month
   loading!: boolean
   error!: boolean
   today: string = new Date(Date.now()).toISOString().substring(0,10)
+  lastDayofThisYear: string = new Date(Date.now()).toISOString().substring(0,4)+"-12-31"
+  firstDayofLastYear: string = (new Date(Date.now()).getFullYear()-1).toString()+"-01-01"
   startPosition!: number
   emptyBeginning: string[] = []
   weeks: Day[][] = []
@@ -91,7 +93,9 @@ export class DisplayMonthComponent implements OnInit {
   }
 
   onSubmitMonth() {
-    this.getMonth(this.monthForm.get('date')?.value)
+    let date: string = this.monthForm.get('date')?.value
+    date += "-01"
+    this.getMonth(date)
   }
 
   onClick(day: Day) {
@@ -125,6 +129,16 @@ export class DisplayMonthComponent implements OnInit {
           this.getMonth(new Date(this.month.startDate).toISOString().substring(0,10))
           this.clickedDate1 = undefined
           this.clickedDate2 = undefined
+        }
+      })
+    }
+  }
+
+  ngAfterViewInit(): void {
+    if(!this.month){
+      this.monthService.createPeriod(this.firstDayofLastYear, this.lastDayofThisYear).subscribe({
+        next:()=>{
+          this.getMonth(new Date(this.month.startDate).toISOString().substring(0,10))
         }
       })
     }

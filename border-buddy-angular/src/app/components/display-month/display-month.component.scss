@@ -17,8 +17,7 @@
 
 
 table {
-  table-layout: fixed ;
-  width: 100% ;
+  //table-layout: fixed ;
 }
 td {
   width: 14% ;
@@ -26,7 +25,12 @@ td {
 td p {
   height: 10vh;
 }
-#calendar {
-  width: 80%;
-  margin: auto;
+#legende{
+  width: 60%;
+}
+
+p.typed, p.valid, p.pending{
+  border: 2px solid black;
+  width: 40px;
+  height: 5vh;
 }

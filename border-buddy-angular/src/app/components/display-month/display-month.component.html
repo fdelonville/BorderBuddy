@@ -1,42 +1,79 @@
-<h2 *ngIf="loading">Loading...</h2>
-<div *ngIf="!loading && !error" id = "calendar">
-  <h2> {{month.startDate | date:'MMMM y':undefined :'fr-BE' | titlecase}} </h2>
-  <table class = "table table-bordered">
-    <thead>
-    <tr>
-      <th>Lundi</th>
-      <th>Mardi</th>
-      <th>Mercredi</th>
-      <th>Jeudi</th>
-      <th>Vendredi</th>
-      <th>Samedi</th>
-      <th>Dimanche</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let week of weeks; let i = index">
-      <ng-container *ngIf = "i === 1"><td *ngFor="let day of emptyBeginning"> </td></ng-container>
-      <td *ngFor="let day of week" (click)="onClick(day)" [ngClass]="day.selected ? 'selected' : day.status | lowercase">
-          <p *ngIf="!day.type">{{day.dayDate | date: 'd'}}</p>
-          <p class = " {{day.type | lowercase}}" *ngIf="day.type">{{day.dayDate | date: 'd'}}</p>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-  <br>
-  <form *ngIf="clickedDate1" [formGroup]="typeForm" (ngSubmit)="onSubmitType()">
-    <label for="type">Choisir un type</label>
-    <select id = "type" formControlName="type">
-      <option *ngFor="let type of types"  value="{{type}}"> {{type}} </option>
-    </select>
-    <button type = "submit" class = "btn btn-primary">Confirmer</button>
-  </form>
-  <br>
-  <h3>Afficher un autre mois</h3>
-  <form [formGroup]="monthForm" (ngSubmit)="onSubmitMonth()">
-    <input type ="date" formControlName = "date">
-    <button type = "submit" class = "btn btn-primary">Envoyer</button>
-  </form>
+<h2 *ngIf="loading">Chargement...</h2>
+<div *ngIf="!loading && !error">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-8">
+        <h2> {{month.startDate | date:'MMMM y':undefined :'fr-BE' | titlecase}} </h2>
+        <div class = "table-responsive-xxl">
+          <table class = "table table-bordered">
+            <thead>
+            <tr>
+              <th scope="col">Lundi</th>
+              <th scope="col">Mardi</th>
+              <th scope="col">Mercredi</th>
+              <th scope="col">Jeudi</th>
+              <th scope="col">Vendredi</th>
+              <th scope="col">Samedi</th>
+              <th scope="col">Dimanche</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let week of weeks; let i = index">
+              <ng-container *ngIf = "i === 1"><td *ngFor="let day of emptyBeginning"> </td></ng-container>
+              <td *ngFor="let day of week" (click)="onClick(day)" [ngClass]="day.selected ? 'selected' : day.status | lowercase">
+                  <p *ngIf="!day.type">{{day.dayDate | date: 'd'}}</p>
+                  <p class = " {{day.type | lowercase}}" *ngIf="day.type">{{day.dayDate | date: 'd'}}</p>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class = "col-4">
+        <table class = "table table-borderless" id ="legende">
+          <thead>
+          <tr>
+            <th scope="col">Légende</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>En attente de choix de type</td>
+            <td><p class = "pending"></p></td>
+          </tr>
+          <tr>
+            <td>En attente de justificatif</td>
+            <td><p class = "typed"></p></td>
+          </tr>
+          <tr>
+            <td>Valide</td>
+            <td><p class = "valid"></p></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h3>Afficher un autre mois</h3>
+        <form [formGroup]="monthForm" (ngSubmit)="onSubmitMonth()">
+          <input type ="month" formControlName = "date">
+          <button type = "submit" class = "btn btn-primary">Confirmer</button>
+        </form>
+      </div>
+      <div class="col">
+        <form *ngIf="clickedDate1" [formGroup]="typeForm" (ngSubmit)="onSubmitType()">
+          <h3>Attribuer un type aux jours sélectionnés</h3>
+          <label for="type">Choisir un type</label>
+          <select id = "type" formControlName="type">
+            <option *ngFor="let type of types"  value="{{type}}"> {{type}} </option>
+          </select>
+          <button type = "submit" class = "btn btn-primary">Confirmer</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 <div *ngIf="error && !loading">
   <h2>Erreur : mois inexistant</h2>
