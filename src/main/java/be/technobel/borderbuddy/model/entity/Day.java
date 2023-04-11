@@ -30,4 +30,8 @@ public class Day {
     @JoinColumn(name = "day-of-month")
     private Month month;
 
+    @ManyToOne
+    @JoinColumn(name= "covered-by-document")
+    private Document document;
+
 }

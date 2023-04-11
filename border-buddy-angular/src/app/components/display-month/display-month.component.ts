@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MonthService} from "../../services/month.service";
 import {Month} from "../../models/month.model";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
@@ -29,7 +29,7 @@ export class DisplayMonthComponent implements OnInit, OnDestroy {
 
   constructor(private readonly monthService : MonthService, private readonly dayService : DayService){
     this.monthForm = new FormGroup({
-      'date': new FormControl()
+      'date': new FormControl('',[Validators.required,Validators.minLength(7),Validators.maxLength(7)])
     })
     this.typeForm = new FormGroup({
       'startDate': new FormControl(),
@@ -66,8 +66,9 @@ export class DisplayMonthComponent implements OnInit, OnDestroy {
     let lastDay: string = year + "-12-31"
     let createMonthSub: Subscription = this.monthService.createPeriod(firstDay, lastDay).subscribe({
       next:()=> {
-        if(!this.monthForm.get('date')){
-          window.location.reload()
+        if(!this.monthForm.get('date')?.value){
+          console.log('')
+          this.ngOnInit()
         }
         else this.onSubmitMonth()
       },
@@ -112,9 +113,12 @@ export class DisplayMonthComponent implements OnInit, OnDestroy {
   }
 
   onSubmitMonth() {
-    let date: string = this.monthForm.get('date')?.value
-    date += "-01"
-    this.getMonth(date)
+    if(this.monthForm.valid) {
+      this.weeks = []
+      let date: string = this.monthForm.get('date')?.value
+      date += "-01"
+      this.getMonth(date)
+    }
   }
 
   onClick(day: Day) {
