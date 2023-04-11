@@ -1,23 +1,22 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {MonthService} from "../../services/month.service";
 import {Month} from "../../models/month.model";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Day} from "../../models/day.model";
 import {DayService} from "../../services/day.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-display-month',
   templateUrl: './display-month.component.html',
   styleUrls: ['./display-month.component.scss']
 })
-export class DisplayMonthComponent implements OnInit, AfterViewInit {
+export class DisplayMonthComponent implements OnInit, OnDestroy {
 
   month!: Month
   loading!: boolean
   error!: boolean
   today: string = new Date(Date.now()).toISOString().substring(0,10)
-  lastDayofThisYear: string = new Date(Date.now()).toISOString().substring(0,4)+"-12-31"
-  firstDayofLastYear: string = (new Date(Date.now()).getFullYear()-1).toString()+"-01-01"
   startPosition!: number
   emptyBeginning: string[] = []
   weeks: Day[][] = []
@@ -26,6 +25,7 @@ export class DisplayMonthComponent implements OnInit, AfterViewInit {
   types!: string[]
   monthForm: FormGroup
   typeForm: FormGroup
+  subscriptions: Subscription[] = []
 
   constructor(private readonly monthService : MonthService, private readonly dayService : DayService){
     this.monthForm = new FormGroup({
@@ -61,11 +61,29 @@ export class DisplayMonthComponent implements OnInit, AfterViewInit {
     }
   }
 
+  createAndDisplayPeriod(year: string): void{
+    let firstDay: string = year + "-01-01"
+    let lastDay: string = year + "-12-31"
+    let createMonthSub: Subscription = this.monthService.createPeriod(firstDay, lastDay).subscribe({
+      next:()=> {
+        if(!this.monthForm.get('date')){
+          window.location.reload()
+        }
+        else this.onSubmitMonth()
+      },
+      error:() => {
+        this.loading = false
+        this.error = true
+      }
+    })
+    this.subscriptions.push(createMonthSub)
+  }
+
   getMonth(date: string): void{
     this.loading = true
     this.error = true
     this.emptyBeginning = []
-    this.monthService.getOne(date).subscribe(
+    let getMonthSub: Subscription = this.monthService.getOne(date).subscribe(
       {next:(m:Month) => {
           this.month = m
           this.month.days.sort((a,b) => (a.id > b.id) ? 1 : -1)
@@ -77,19 +95,20 @@ export class DisplayMonthComponent implements OnInit, AfterViewInit {
           this.error = false
         },
         error:()=> {
-          this.loading = false
-          this.error = true
+          this.createAndDisplayPeriod(date.substring(0, 4))
         }
       }
     )
+    this.subscriptions.push(getMonthSub)
   }
 
 
   ngOnInit(): void {
     this.getMonth(this.today)
-    this.dayService.getAllTypes().subscribe(
+    let getTypeSub: Subscription = this.dayService.getAllTypes().subscribe(
       {next:(t:any)=>this.types=t}
     )
+    this.subscriptions.push(getTypeSub)
   }
 
   onSubmitMonth() {
@@ -103,9 +122,18 @@ export class DisplayMonthComponent implements OnInit, AfterViewInit {
         this.clickedDate1 = day.dayDate
         day.selected = true
       }
+      else if(this.clickedDate1 == day.dayDate && this.clickedDate2 == undefined){
+        this.clickedDate1 = undefined
+        day.selected = false
+      }
       else if (this.clickedDate2 == undefined) {
         this.clickedDate2 = day.dayDate
         day.selected = true
+        if(this.clickedDate1 > this.clickedDate2){
+          let tempDate : Date = this.clickedDate1
+          this.clickedDate1 = this.clickedDate2
+          this.clickedDate2 = tempDate
+        }
         this.month.days.forEach(d => {
           if(this.clickedDate1 && this.clickedDate2 && (d.dayDate > this.clickedDate1 && d.dayDate < this.clickedDate2)) d.selected = true
         })
@@ -124,23 +152,18 @@ export class DisplayMonthComponent implements OnInit, AfterViewInit {
         'startDate': this.clickedDate1,
         'endDate': this.clickedDate2
       })
-      this.dayService.assignType(this.typeForm.value).subscribe({next:()=> {
+      let setTypeSub: Subscription = this.dayService.assignType(this.typeForm.value).subscribe({next:()=> {
           this.typeForm.reset()
           this.getMonth(new Date(this.month.startDate).toISOString().substring(0,10))
           this.clickedDate1 = undefined
           this.clickedDate2 = undefined
         }
       })
+      this.subscriptions.push(setTypeSub)
     }
   }
 
-  ngAfterViewInit(): void {
-    if(!this.month){
-      this.monthService.createPeriod(this.firstDayofLastYear, this.lastDayofThisYear).subscribe({
-        next:()=>{
-          this.getMonth(new Date(this.month.startDate).toISOString().substring(0,10))
-        }
-      })
-    }
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub=> sub.unsubscribe())
   }
 }

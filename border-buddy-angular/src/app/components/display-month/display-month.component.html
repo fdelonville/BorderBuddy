@@ -18,13 +18,13 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let week of weeks; let i = index">
-              <ng-container *ngIf = "i === 1"><td *ngFor="let day of emptyBeginning"> </td></ng-container>
-              <td *ngFor="let day of week" (click)="onClick(day)" [ngClass]="day.selected ? 'selected' : day.status | lowercase">
-                  <p *ngIf="!day.type">{{day.dayDate | date: 'd'}}</p>
-                  <p class = " {{day.type | lowercase}}" *ngIf="day.type">{{day.dayDate | date: 'd'}}</p>
-              </td>
-            </tr>
+              <tr *ngFor="let week of weeks; let i = index">
+                <ng-container *ngIf = "i === 1"><td *ngFor="let day of emptyBeginning"> </td></ng-container>
+                <td *ngFor="let day of week" (click)="onClick(day)" [ngClass]="day.selected ? 'selected' : day.status | lowercase">
+                    <p *ngIf="!day.type">{{day.dayDate | date: 'd'}}</p>
+                    <p class = " {{day.type | lowercase}}" *ngIf="day.type">{{day.dayDate | date: 'd'}}</p>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -55,14 +55,14 @@
       </div>
     </div>
     <div class="row">
-      <div class="col">
+      <div class="col-4">
         <h3>Afficher un autre mois</h3>
         <form [formGroup]="monthForm" (ngSubmit)="onSubmitMonth()">
-          <input type ="month" formControlName = "date">
+          <input type ="month" formControlName = "date" placeholder="2023-05">
           <button type = "submit" class = "btn btn-primary">Confirmer</button>
         </form>
       </div>
-      <div class="col">
+      <div class="col-4">
         <form *ngIf="clickedDate1" [formGroup]="typeForm" (ngSubmit)="onSubmitType()">
           <h3>Attribuer un type aux jours sélectionnés</h3>
           <label for="type">Choisir un type</label>
