@@ -10,5 +10,4 @@ import {HttpEventType, HttpResponse} from "@angular/common/http";
 })
 export class UploadComponent{
 
-
 }

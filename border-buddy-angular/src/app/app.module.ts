@@ -15,6 +15,7 @@ import { CreatePeriodComponent } from './components/create-period/create-period.
 import { FooterComponent } from './components/footer/footer.component';
 import { UploadComponent } from './components/upload/upload.component';
 import { ChooseTypeComponent } from './components/choose-type/choose-type.component';
+import { TestUploadComponent } from './components/test-upload/test-upload.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ChooseTypeComponent } from './components/choose-type/choose-type.compon
     CreatePeriodComponent,
     FooterComponent,
     UploadComponent,
-    ChooseTypeComponent
+    ChooseTypeComponent,
+    TestUploadComponent
   ],
   imports: [
     BrowserModule,
