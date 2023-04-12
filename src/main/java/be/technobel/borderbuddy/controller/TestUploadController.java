@@ -1,13 +1,11 @@
 package be.technobel.borderbuddy.controller;
 
+import be.technobel.borderbuddy.service.interfaces.DocumentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -17,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
 import java.util.Map;
 
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
@@ -25,8 +24,16 @@ import static org.springframework.http.ResponseEntity.ok;
 @RestController
 @Slf4j
 @CrossOrigin("*")
+@RequestMapping("api/file")
 public class TestUploadController {
-    @PostMapping(value = "simple-form-upload-mvc", consumes = MULTIPART_FORM_DATA_VALUE)
+
+    private final DocumentService documentService;
+
+    public TestUploadController(DocumentService documentService) {
+        this.documentService = documentService;
+    }
+
+    @PostMapping(value = "/upload", consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Map<String, String>> handleFileUploadForm(@RequestPart("file") MultipartFile file) throws IOException {
 
         log.info("handling request parts: {}", file);
@@ -58,5 +65,10 @@ public class TestUploadController {
             log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PostMapping("/save")
+    public void saveFiletoDB(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate, @RequestParam String fileURL){
+        documentService.create(startDate,endDate,fileURL);
     }
 }

@@ -11,9 +11,9 @@ import {UploadService} from "../../services/upload.service";
 })
 export class TestUploadComponent{
 
-  file!: File;
-  fileDetails!: FileDetails;
-  fileUris: Array<string> = [];
+  file!: File
+  fileDetails!: FileDetails
+  fileUris: Array<string> = []
   form: FormGroup
 
 
@@ -25,19 +25,25 @@ export class TestUploadComponent{
   }
 
   selectFile(event: any) {
-    this.file = event.target.files.item(0);
+    this.file = event.target.files.item(0)
   }
 
   uploadFile() {
     this.uploadService.upload(this.file).subscribe({
       next: (data) => {
-        this.fileDetails = data;
-        this.fileUris.push(this.fileDetails.fileUri);
-        alert("Fichier ajouté avec succès")
+        this.fileDetails = data
+        this.fileUris.push(this.fileDetails.fileUri)
+        let startDate: string = this.form.get('date1')?.value
+        let endDate: string = this.form.get('date2')?.value
+        this.uploadService.save(startDate,endDate,this.fileUris[0]).subscribe({
+          next:() => {
+            alert("Fichier ajouté avec succès")
+          }
+        })
       },
       error: (e) => {
-        console.log(e);
+        console.log(e)
       }
-    });
+    })
   }
 }

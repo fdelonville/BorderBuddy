@@ -10,8 +10,5 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin("*")
 @RequestMapping("api/file")
 public class DocumentController {
-    @PostMapping("/upload")
-    public void newDoc(){
 
-    }
 }

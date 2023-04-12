@@ -4,9 +4,13 @@
     <div class="col-10 mb-3">
       <label class="px-3">Choisir un fichier: </label>
       <input type="file" (change)="selectFile($event)" />
-    </div>
-
-    <div class="col-2">
+      <form [formGroup]="form">
+        <label for="date1">Premier jour couvert</label>
+        <input type="date" id = "date1" formControlName="date1">
+        <br>
+        <label for="date2">Dernier jour couvert</label>
+        <input type="date" id = "date2" formControlName="date2">
+      </form>
       <button class="btn btn-success btn-sm" (click)="uploadFile()">
         Ajouter
       </button>
