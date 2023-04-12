@@ -29,21 +29,23 @@ export class TestUploadComponent{
   }
 
   uploadFile() {
-    this.uploadService.upload(this.file).subscribe({
-      next: (data) => {
-        this.fileDetails = data
-        this.fileUris.push(this.fileDetails.fileUri)
-        let startDate: string = this.form.get('date1')?.value
-        let endDate: string = this.form.get('date2')?.value
-        this.uploadService.save(startDate,endDate,this.fileUris[0]).subscribe({
-          next:() => {
-            alert("Fichier ajouté avec succès")
-          }
-        })
-      },
-      error: (e) => {
-        console.log(e)
-      }
-    })
+    if (this.form.valid && this.file) {
+      this.uploadService.upload(this.file).subscribe({
+        next: (data) => {
+          this.fileDetails = data
+          this.fileUris.push(this.fileDetails.fileUri)
+          let startDate: string = this.form.get('date1')?.value
+          let endDate: string = this.form.get('date2')?.value
+          this.uploadService.save(startDate, endDate, this.fileUris[0]).subscribe({
+            next: () => {
+              alert("Fichier ajouté avec succès")
+            }
+          })
+        },
+        error: (e) => {
+          console.log(e)
+        }
+      })
+    }
   }
 }
