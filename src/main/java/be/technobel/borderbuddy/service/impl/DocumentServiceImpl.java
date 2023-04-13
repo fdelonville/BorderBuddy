@@ -49,6 +49,11 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public DocumentDTO getOne(Long id) {
-        return null;
+        return documentRepository.findById(id).map(DocumentDTO::toDto).orElseThrow();
+    }
+
+    @Override
+    public List<DocumentDTO> getAllBetweenDates(LocalDate startDate, LocalDate endDate) {
+        return documentRepository.findAllByStartDateBetween(startDate,endDate).stream().map(DocumentDTO::toDto).toList();
     }
 }
