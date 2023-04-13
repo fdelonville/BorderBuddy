@@ -2,7 +2,7 @@
 <div *ngIf="!loading && !error">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-7">
+      <div class="col-6">
         <h2> {{month.startDate | date:'MMMM y':undefined :'fr-BE' | titlecase}} </h2>
         <div class = "table-responsive-xxl">
           <table class = "table table-bordered">
@@ -30,7 +30,7 @@
         </div>
       </div>
       <div class = "col-3">
-        <table class = "table table-borderless" id ="legende">
+        <table class = "table" id ="legende">
           <thead>
           <tr>
             <th scope="col">Légende</th>
@@ -50,8 +50,26 @@
             <td>Valide</td>
             <td><p class = "valid"></p></td>
           </tr>
+          <tr>
+            <td>Week-end ou jour férié</td>
+            <td><p class = "public_holiday_or_weekend"></p></td>
+          </tr>
           </tbody>
         </table>
+        <form *ngIf="clickedDate1" [formGroup]="typeForm" (ngSubmit)="onSubmitType()">
+          <h5>Donner un type aux jours sélectionnés</h5>
+          <label for="type">Choisir un type</label>
+          <select id = "type" formControlName="type">
+            <option *ngFor="let type of types"  value="{{type}}"> {{type}} </option>
+          </select>
+          <br>
+          <br>
+          <label for="file">Ajouter un justificatif</label>
+          <br>
+          <input type="file" id="file" (change)="selectFile($event)">
+          <br>
+          <button type = "submit" class = "btn btn-primary">Confirmer</button>
+        </form>
       </div>
     </div>
     <div class="row">
@@ -63,19 +81,12 @@
         </form>
       </div>
       <div class="col-5">
-        <form *ngIf="clickedDate1" [formGroup]="typeForm" (ngSubmit)="onSubmitType()">
-          <h3>Attribuer un type aux jours sélectionnés</h3>
-          <label for="type">Choisir un type</label>
-          <select id = "type" formControlName="type">
-            <option *ngFor="let type of types"  value="{{type}}"> {{type}} </option>
-          </select>
-          <button type = "submit" class = "btn btn-primary">Confirmer</button>
-        </form>
+
       </div>
     </div>
   </div>
 </div>
 <div *ngIf="error && !loading">
   <h2>Erreur : mois inexistant</h2>
-  <button routerLink="/init" class = "btn btn-secondary">Initialiser la période concernée</button>
+  <button routerLink="/accueil" class = "btn btn-secondary">Retour à l'accueil</button>
 </div>

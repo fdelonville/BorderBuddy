@@ -5,6 +5,8 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Day} from "../../models/day.model";
 import {DayService} from "../../services/day.service";
 import {Subscription} from "rxjs";
+import {UploadService} from "../../services/upload.service";
+import {FileDetails} from "../../models/file-details.model";
 
 @Component({
   selector: 'app-display-month',
@@ -26,8 +28,11 @@ export class DisplayMonthComponent implements OnInit, OnDestroy {
   monthForm: FormGroup
   typeForm: FormGroup
   subscriptions: Subscription[] = []
+  file!: File
+  fileDetails!: FileDetails
+  fileUris: Array<string> = []
 
-  constructor(private readonly monthService : MonthService, private readonly dayService : DayService){
+  constructor(private readonly monthService : MonthService, private readonly dayService : DayService, private readonly uploadService: UploadService){
     this.monthForm = new FormGroup({
       'date': new FormControl('',[Validators.required,Validators.minLength(7),Validators.maxLength(7)])
     })
@@ -157,10 +162,35 @@ export class DisplayMonthComponent implements OnInit, OnDestroy {
         'endDate': this.clickedDate2
       })
       let setTypeSub: Subscription = this.dayService.assignType(this.typeForm.value).subscribe({next:()=> {
-          this.typeForm.reset()
-          this.getMonth(new Date(this.month.startDate).toISOString().substring(0,10))
-          this.clickedDate1 = undefined
-          this.clickedDate2 = undefined
+          if(this.file){
+            let uploadFileSub: Subscription = this.uploadService.upload(this.file).subscribe({
+              next: (data) => {
+                this.fileDetails = data
+                this.fileUris.push(this.fileDetails.fileUri)
+                let date1: string = (this.clickedDate1 ? new Date(this.clickedDate1).toISOString().substring(0,10) : '')
+                let date2: string = (this.clickedDate2 ? new Date(this.clickedDate2).toISOString().substring(0,10) : date1)
+                if(this.clickedDate1 && !this.clickedDate2){
+                  this.clickedDate2 = this.clickedDate1
+                  date2 = this.clickedDate2.toISOString().substring(0,10)
+                }
+
+                let saveFileToDBSub: Subscription = this.uploadService.save(date1, date2, this.fileUris[0]).subscribe({
+                  next: () => {
+                    alert("Fichier ajouté avec succès")
+                    this.typeForm.reset()
+                    this.getMonth(new Date(this.month.startDate).toISOString().substring(0,10))
+                    this.clickedDate1 = undefined
+                    this.clickedDate2 = undefined
+                  }
+                })
+                this.subscriptions.push(saveFileToDBSub)
+              },
+              error: (e) => {
+                console.log(e)
+              }
+            })
+            this.subscriptions.push(uploadFileSub)
+          }
         }
       })
       this.subscriptions.push(setTypeSub)
@@ -169,5 +199,9 @@ export class DisplayMonthComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub=> sub.unsubscribe())
+  }
+
+  selectFile(event: any) {
+    this.file = event.target.files.item(0)
   }
 }

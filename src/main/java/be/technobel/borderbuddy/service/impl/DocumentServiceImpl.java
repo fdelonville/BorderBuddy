@@ -1,5 +1,6 @@
 package be.technobel.borderbuddy.service.impl;
 
+import be.technobel.borderbuddy.model.Status;
 import be.technobel.borderbuddy.model.dto.DocumentDTO;
 import be.technobel.borderbuddy.model.entity.Day;
 import be.technobel.borderbuddy.model.entity.Document;
@@ -24,11 +25,24 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public void create(LocalDate startDate, LocalDate endDate, String fileURL) {
+        if(endDate.isBefore(startDate)){
+            LocalDate tempDate = startDate;
+            startDate = endDate;
+            endDate = tempDate;
+        }
         Document document = new Document();
         document.setStartDate(startDate);
         document.setEndDate(endDate);
         document.setFileURL(fileURL);
+        documentRepository.save(document);
         List<Day> days = dayRepository.findAllByDayDateBetween(startDate, endDate);
+        days.forEach(day -> {
+            if(day.getStatus()!=Status.PUBLIC_HOLIDAY_OR_WEEKEND) {
+                day.setStatus(Status.VALID);
+                day.setDocument(document);
+                dayRepository.save(day);
+            }
+        });
         document.setDaysCovered(days);
         documentRepository.save(document);
     }
