@@ -28,7 +28,7 @@ export class DisplayMonthComponent implements OnInit, OnDestroy {
   monthForm: FormGroup
   typeForm: FormGroup
   subscriptions: Subscription[] = []
-  file!: File
+  file?: File
   fileDetails!: FileDetails
   fileUris: Array<string> = []
 
@@ -181,6 +181,7 @@ export class DisplayMonthComponent implements OnInit, OnDestroy {
                     this.getMonth(new Date(this.month.startDate).toISOString().substring(0,10))
                     this.clickedDate1 = undefined
                     this.clickedDate2 = undefined
+                    this.file = undefined
                   }
                 })
                 this.subscriptions.push(saveFileToDBSub)
@@ -190,6 +191,12 @@ export class DisplayMonthComponent implements OnInit, OnDestroy {
               }
             })
             this.subscriptions.push(uploadFileSub)
+          }
+          else{
+            this.typeForm.reset()
+            this.getMonth(new Date(this.month.startDate).toISOString().substring(0,10))
+            this.clickedDate1 = undefined
+            this.clickedDate2 = undefined
           }
         }
       })
