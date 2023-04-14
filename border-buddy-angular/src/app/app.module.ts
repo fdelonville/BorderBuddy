@@ -16,6 +16,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { UploadComponent } from './components/upload/upload.component';
 import { ChooseTypeComponent } from './components/choose-type/choose-type.component';
 import { TestUploadComponent } from './components/test-upload/test-upload.component';
+import { DisplayDocsComponent } from './components/display-docs/display-docs.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { TestUploadComponent } from './components/test-upload/test-upload.compon
     FooterComponent,
     UploadComponent,
     ChooseTypeComponent,
-    TestUploadComponent
+    TestUploadComponent,
+    DisplayDocsComponent
   ],
   imports: [
     BrowserModule,

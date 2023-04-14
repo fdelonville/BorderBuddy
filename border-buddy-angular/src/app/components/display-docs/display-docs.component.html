@@ -1,0 +1,15 @@
+<br>
+<h2>Afficher les justificatifs correspondant à une période :</h2>
+<br>
+<label for="date1">Début de la période couverte :</label>
+<input type="date" id = "date1">
+<br>
+<label for="date2">Fin de la période couverte :</label>
+<input type="date" id = "date2">
+<br>
+<button class = "btn btn-primary">Afficher</button>
+<ul *ngIf="documents">
+  <li *ngFor="let document of documents">
+    {{document.fileURL}}
+  </li>
+</ul>

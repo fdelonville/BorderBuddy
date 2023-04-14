@@ -1,5 +1,6 @@
 package be.technobel.borderbuddy.controller;
 
+import be.technobel.borderbuddy.model.dto.DocumentDTO;
 import be.technobel.borderbuddy.service.interfaces.DocumentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
@@ -16,6 +17,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
@@ -70,5 +72,10 @@ public class DocumentController {
     @PostMapping("/save")
     public void saveFiletoDB(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate, @RequestParam String fileURL){
         documentService.create(startDate,endDate,fileURL);
+    }
+
+    @PostMapping("/display-period")
+    public List<DocumentDTO> displayDocsByPeriod(LocalDate startDate, LocalDate endDate){
+        return documentService.getAllBetweenDates(startDate, endDate);
     }
 }
