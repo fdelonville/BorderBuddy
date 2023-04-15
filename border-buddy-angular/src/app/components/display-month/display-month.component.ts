@@ -72,8 +72,7 @@ export class DisplayMonthComponent implements OnInit, OnDestroy {
     let createMonthSub: Subscription = this.monthService.createPeriod(firstDay, lastDay).subscribe({
       next:()=> {
         if(!this.monthForm.get('date')?.value){
-          console.log('')
-          this.ngOnInit()
+          this.getMonth(this.today)
         }
         else this.onSubmitMonth()
       },
@@ -182,6 +181,7 @@ export class DisplayMonthComponent implements OnInit, OnDestroy {
                     this.clickedDate1 = undefined
                     this.clickedDate2 = undefined
                     this.file = undefined
+                    this.fileUris = []
                   }
                 })
                 this.subscriptions.push(saveFileToDBSub)

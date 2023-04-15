@@ -1,15 +1,16 @@
 <br>
 <h2>Afficher les justificatifs correspondant à une période :</h2>
 <br>
+<form [formGroup]="form">
 <label for="date1">Début de la période couverte :</label>
-<input type="date" id = "date1">
+<input type="date" id = "date1" formControlName="startDate" (change)="selectStartDate()">
 <br>
 <label for="date2">Fin de la période couverte :</label>
-<input type="date" id = "date2">
+<input type="date" id = "date2" formControlName="endDate" (change)="displayAll()">
+</form>
 <br>
-<button class = "btn btn-primary">Afficher</button>
 <ul *ngIf="documents">
   <li *ngFor="let document of documents">
-    {{document.fileURL}}
+    <a href="{{document.fileURL}}"> {{document.id}} {{document.fileURL}}</a>
   </li>
 </ul>

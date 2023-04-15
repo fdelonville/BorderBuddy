@@ -75,9 +75,8 @@
     <div class="row">
       <div class="col-5">
         <h3>Afficher un autre mois</h3>
-        <form [formGroup]="monthForm" (ngSubmit)="onSubmitMonth()">
-          <input type ="month" formControlName = "date" placeholder="2023-05">
-          <button type = "submit" class = "btn btn-primary">Confirmer</button>
+        <form [formGroup]="monthForm">
+          <input type ="month" formControlName = "date" placeholder="2023-05" (change)="onSubmitMonth()">
         </form>
       </div>
       <div class="col-5">

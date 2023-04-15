@@ -1,7 +1,7 @@
 import {Day} from "./day.model";
 
 export class Justificatif{
-  id!: number
+   id!: number
 
    fileURL!: string
 
