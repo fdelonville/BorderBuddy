@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
@@ -8,6 +8,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 })
 export class LoginComponent {
   form: FormGroup
+  @Output() registerClickedEmitter = new EventEmitter<null>
   constructor(){
     this.form = new FormGroup({
       'login': new FormControl('',[Validators.required,Validators.minLength(2)]),
@@ -17,5 +18,9 @@ export class LoginComponent {
 
   onSubmit() {
 
+  }
+
+  onClickRegister(){
+    this.registerClickedEmitter.emit()
   }
 }

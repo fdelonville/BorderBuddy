@@ -1,3 +1,6 @@
 <h2>Bienvenue</h2>
 <br>
-<app-login></app-login>
+<div *ngIf="!sessionStorage.getItem('user')">
+  <app-login (registerClickedEmitter)="toggle()" *ngIf="!showRegister"></app-login>
+  <app-register *ngIf="showRegister"></app-register>
+</div>

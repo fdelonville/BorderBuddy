@@ -1,9 +1,19 @@
+<br>
+<h3>Se connecter</h3>
 <form [formGroup]="form" (ngSubmit)="onSubmit()" >
   <label for="login"> Login :</label>
+  <br>
   <input type="text" id ="login" formControlName = "login">
   <br>
+  <br>
   <label for="password"> Mot de passe :</label>
+  <br>
   <input type="password" id ="password" formControlName = "login">
+  <br>
   <br>
   <input type="submit" class="btn btn-primary" value="Se connecter">
 </form>
+<br>
+<label for="create">Pas encore de compte ?</label>
+<br>
+<button id ="create" class="btn btn-secondary" (click)="onClickRegister()">Créer un compte</button>
