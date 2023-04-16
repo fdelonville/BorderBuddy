@@ -26,7 +26,8 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public void create(LocalDate startDate, LocalDate endDate, String fileURL) {
-        if(endDate.isBefore(startDate)){
+        if(endDate==null)endDate = startDate;
+        else if(endDate.isBefore(startDate)){
             LocalDate tempDate = startDate;
             startDate = endDate;
             endDate = tempDate;

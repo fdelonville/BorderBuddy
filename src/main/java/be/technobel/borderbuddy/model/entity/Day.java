@@ -34,4 +34,8 @@ public class Day {
     @JoinColumn(name= "covered-by-document")
     private Document document;
 
+    @ManyToOne
+    @JoinColumn(name = "day-of-employee")
+    private Employee employee;
+
 }

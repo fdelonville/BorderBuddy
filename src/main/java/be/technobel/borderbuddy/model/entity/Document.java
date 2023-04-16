@@ -26,4 +26,8 @@ public class Document {
     @OneToMany(mappedBy = "document")
     private List<Day> daysCovered = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "document-of-employee")
+    private Employee employee;
+
 }

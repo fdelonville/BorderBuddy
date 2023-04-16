@@ -31,13 +31,13 @@ public class Employee {
     @Column(nullable = false)
     private String email;
 
-    @OneToMany
+    @OneToMany(mappedBy = "employee")
     private Set<Day> days = new HashSet<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "employee")
     private Set<Month> months = new HashSet<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "employee")
     private Set<Document> documents = new HashSet<>();
 
 }

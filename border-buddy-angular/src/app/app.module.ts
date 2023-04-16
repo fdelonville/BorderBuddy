@@ -18,6 +18,9 @@ import { ChooseTypeComponent } from './components/choose-type/choose-type.compon
 import { TestUploadComponent } from './components/test-upload/test-upload.component';
 import { DisplayDocsComponent } from './components/display-docs/display-docs.component';
 import { Page404Component } from './components/page404/page404.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+import { LogoutComponent } from './components/logout/logout.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +34,10 @@ import { Page404Component } from './components/page404/page404.component';
     ChooseTypeComponent,
     TestUploadComponent,
     DisplayDocsComponent,
-    Page404Component
+    Page404Component,
+    LoginComponent,
+    RegisterComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,

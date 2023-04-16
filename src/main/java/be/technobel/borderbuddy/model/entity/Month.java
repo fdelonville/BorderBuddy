@@ -25,6 +25,10 @@ public class Month {
     @OneToMany(mappedBy = "month")
     private List<Day> days = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "month-of-employee")
+    private Employee employee;
+
     public void addDay(Day day){
         days.add(day);
     }
