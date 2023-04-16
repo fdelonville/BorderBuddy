@@ -1,5 +1,6 @@
 package be.technobel.borderbuddy.service.impl;
 
+import be.technobel.borderbuddy.exception.NotFoundException;
 import be.technobel.borderbuddy.model.Status;
 import be.technobel.borderbuddy.model.Type;
 import be.technobel.borderbuddy.model.dto.DayDTO;
@@ -52,20 +53,35 @@ public class DayServiceImpl implements DayService {
         return Arrays.stream(Type.values()).map(Enum::toString).toList();
     }
 
-    @Override
-    public void setDayRangeType(LocalDate date1, LocalDate date2, Type type) {
+    public void processDates(LocalDate date1, LocalDate date2){
         if(date2 == null) date1 = date2;
         else if(date2.isBefore(date1)) {
             LocalDate date3 = date1;
             date1 = date2;
             date2 = date3;
         }
+    }
 
-        List<Day> dayList = dayRepository.findAllByDayDateBetween(date1, date2);
+    @Override
+    public void setDayRangeType(LocalDate date1, LocalDate date2, Type type) {
+        processDates(date1,date2);
+        List<Day> dayList = dayRepository.findAllByDayDateBetween(date1, date2).orElseThrow(NotFoundException::new);
         dayList.forEach(day -> {
             if((day.getStatus()!= Status.VALID) && (day.getStatus() != Status.PUBLIC_HOLIDAY_OR_WEEKEND)){
                 day.setType(type);
                 day.setStatus(Status.TYPED);
+                dayRepository.save(day);
+            }
+        });
+    }
+
+    @Override
+    public void setDayRangeStatus(LocalDate date1, LocalDate date2, Status status) {
+        processDates(date1,date2);
+        List<Day> dayList = dayRepository.findAllByDayDateBetween(date1, date2).orElseThrow(NotFoundException::new);
+        dayList.forEach(day -> {
+            if((day.getStatus()!= Status.VALID)){
+                day.setStatus(status);
                 dayRepository.save(day);
             }
         });

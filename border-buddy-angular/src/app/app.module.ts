@@ -17,6 +17,7 @@ import { UploadComponent } from './components/upload/upload.component';
 import { ChooseTypeComponent } from './components/choose-type/choose-type.component';
 import { TestUploadComponent } from './components/test-upload/test-upload.component';
 import { DisplayDocsComponent } from './components/display-docs/display-docs.component';
+import { Page404Component } from './components/page404/page404.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { DisplayDocsComponent } from './components/display-docs/display-docs.com
     UploadComponent,
     ChooseTypeComponent,
     TestUploadComponent,
-    DisplayDocsComponent
+    DisplayDocsComponent,
+    Page404Component
   ],
   imports: [
     BrowserModule,

@@ -39,34 +39,42 @@
           </thead>
           <tbody>
           <tr>
-            <td>En attente de choix de type</td>
             <td><p class = "pending"></p></td>
+            <td>En attente de choix de type</td>
           </tr>
           <tr>
-            <td>En attente de justificatif</td>
             <td><p class = "typed"></p></td>
+            <td>En attente de justificatif</td>
           </tr>
           <tr>
-            <td>Valide</td>
             <td><p class = "valid"></p></td>
+            <td>Valide</td>
           </tr>
           <tr>
-            <td>Week-end ou jour férié</td>
             <td><p class = "public_holiday_or_weekend"></p></td>
+            <td>Week-end ou jour férié</td>
           </tr>
           </tbody>
         </table>
-        <form *ngIf="clickedDate1" [formGroup]="typeForm" (ngSubmit)="onSubmitType()">
+        <form *ngIf="clickedDate1" [formGroup]="typeForm" (ngSubmit)="setToWeekend? onSubmitStatus() : onSubmitType()">
           <h5>Donner un type aux jours sélectionnés</h5>
-          <label for="type">Choisir un type</label>
-          <select id = "type" formControlName="type">
-            <option *ngFor="let type of types"  value="{{type}}"> {{type}} </option>
-          </select>
+          <input type="checkbox" id ="status" (change)="setPeriodToWeekend()">
+          <label for="status">La période sélectionnée est fériée</label>
+          <div *ngIf="!setToWeekend">
+            <br>
+            <br>
+            <label for="type">Choisir un type</label>
+            <select id = "type" formControlName="type">
+              <option *ngFor="let type of types"  value="{{type}}"> {{type}} </option>
+            </select>
+            <br>
+            <br>
+            <label for="file">Ajouter un justificatif</label>
+            <br>
+            <input type="file" id="file" (change)="selectFile($event)">
+            <br>
+          </div>
           <br>
-          <br>
-          <label for="file">Ajouter un justificatif</label>
-          <br>
-          <input type="file" id="file" (change)="selectFile($event)">
           <br>
           <button type = "submit" class = "btn btn-primary">Confirmer</button>
         </form>

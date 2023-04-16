@@ -1,5 +1,6 @@
 package be.technobel.borderbuddy.service.impl;
 
+import be.technobel.borderbuddy.exception.NotFoundException;
 import be.technobel.borderbuddy.model.Status;
 import be.technobel.borderbuddy.model.dto.DocumentDTO;
 import be.technobel.borderbuddy.model.entity.Day;
@@ -35,7 +36,7 @@ public class DocumentServiceImpl implements DocumentService {
         document.setEndDate(endDate);
         document.setFileURL(fileURL);
         documentRepository.save(document);
-        List<Day> days = dayRepository.findAllByDayDateBetween(startDate, endDate);
+        List<Day> days = dayRepository.findAllByDayDateBetween(startDate, endDate).orElseThrow(NotFoundException::new);
         days.forEach(day -> {
             if(day.getStatus()!=Status.PUBLIC_HOLIDAY_OR_WEEKEND) {
                 day.setStatus(Status.VALID);
@@ -49,11 +50,12 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public DocumentDTO getOne(Long id) {
-        return documentRepository.findById(id).map(DocumentDTO::toDto).orElseThrow();
+        return documentRepository.findById(id).map(DocumentDTO::toDto).orElseThrow(NotFoundException::new);
     }
 
     @Override
     public List<DocumentDTO> getAllBetweenDates(LocalDate startDate, LocalDate endDate) {
-        return documentRepository.findAllByStartDateBetween(startDate,endDate).stream().map(DocumentDTO::toDto).toList();
+        List<Document> list = documentRepository.findAllByStartDateBetween(startDate,endDate).orElseThrow(NotFoundException::new);
+        return list.stream().map(DocumentDTO::toDto).toList();
     }
 }

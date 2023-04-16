@@ -14,6 +14,10 @@ export class DayService {
   }
 
   assignType(form: FormGroup){
-    return this.httpClient.post('http://localhost:8080/api/day/assign',form)
+    return this.httpClient.post('http://localhost:8080/api/day/assign-type',form)
+  }
+
+  assignStatus(form: FormGroup){
+    return this.httpClient.post('http://localhost:8080/api/day/assign-status',form)
   }
 }

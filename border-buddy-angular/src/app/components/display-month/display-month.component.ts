@@ -27,10 +27,12 @@ export class DisplayMonthComponent implements OnInit, OnDestroy {
   types!: string[]
   monthForm: FormGroup
   typeForm: FormGroup
+  statusForm: FormGroup
   subscriptions: Subscription[] = []
   file?: File
   fileDetails!: FileDetails
   fileUris: Array<string> = []
+  setToWeekend: boolean = false
 
   constructor(private readonly monthService : MonthService, private readonly dayService : DayService, private readonly uploadService: UploadService){
     this.monthForm = new FormGroup({
@@ -40,6 +42,11 @@ export class DisplayMonthComponent implements OnInit, OnDestroy {
       'startDate': new FormControl(),
       'endDate': new FormControl(),
       'type': new FormControl('',Validators.required)
+    })
+    this.statusForm = new FormGroup({
+      'startDate': new FormControl('',Validators.required),
+      'endDate': new FormControl('',Validators.required),
+      'status': new FormControl('',Validators.required)
     })
   }
 
@@ -204,11 +211,36 @@ export class DisplayMonthComponent implements OnInit, OnDestroy {
     }
   }
 
+  onSubmitStatus(){
+    if(!this.clickedDate2) this.clickedDate2 = this.clickedDate1
+    this.statusForm.patchValue({
+      'startDate': this.clickedDate1,
+      'endDate': this.clickedDate2,
+      'status': "PUBLIC_HOLIDAY_OR_WEEKEND"
+    })
+    let setStatusSub: Subscription = this.dayService.assignStatus(this.statusForm.value).subscribe(
+      {
+        next:()=>{
+          this.setToWeekend = false
+          if(!this.monthForm.get('date')?.value){
+            this.getMonth(this.today)
+          }
+          else this.onSubmitMonth()
+        }
+      }
+    )
+    this.subscriptions.push(setStatusSub)
+  }
+
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub=> sub.unsubscribe())
   }
 
   selectFile(event: any) {
     this.file = event.target.files.item(0)
+  }
+
+  setPeriodToWeekend() {
+    this.setToWeekend = !this.setToWeekend;
   }
 }

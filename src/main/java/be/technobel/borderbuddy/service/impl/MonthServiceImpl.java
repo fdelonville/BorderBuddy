@@ -1,5 +1,6 @@
 package be.technobel.borderbuddy.service.impl;
 
+import be.technobel.borderbuddy.exception.NotFoundException;
 import be.technobel.borderbuddy.model.dto.MonthDTO;
 import be.technobel.borderbuddy.model.entity.Day;
 import be.technobel.borderbuddy.model.entity.Month;
@@ -39,7 +40,7 @@ public class MonthServiceImpl implements MonthService {
 
     @Override
     public MonthDTO getOne(LocalDate startDate) {
-        Month month = monthRepository.findByStartDate(startDate).orElseThrow();
+        Month month = monthRepository.findByStartDate(startDate).orElseThrow(NotFoundException::new);
         return MonthDTO.toDto(month);
     }
 }

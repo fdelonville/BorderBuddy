@@ -1,5 +1,6 @@
 package be.technobel.borderbuddy.controller;
 
+import be.technobel.borderbuddy.model.form.AssignStatusForm;
 import be.technobel.borderbuddy.model.form.AssignTypeForm;
 import be.technobel.borderbuddy.service.interfaces.DayService;
 import jakarta.validation.Valid;
@@ -23,9 +24,14 @@ public class DayController {
         return dayService.getAllTypes();
     }
 
-    @PostMapping("/assign")
+    @PostMapping("/assign-type")
     public void assignType(@RequestBody @Valid AssignTypeForm form){
         dayService.setDayRangeType(form.getStartDate(),form.getEndDate(), form.getType());
+    }
+
+    @PostMapping("/assign-status")
+    public void assignStatus(@RequestBody @Valid AssignStatusForm form){
+        dayService.setDayRangeStatus(form.getStartDate(),form.getEndDate(), form.getStatus());
     }
 
 }

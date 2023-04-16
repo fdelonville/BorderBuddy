@@ -9,8 +9,22 @@
 <input type="date" id = "date2" formControlName="endDate" (change)="displayAll()">
 </form>
 <br>
-<ul *ngIf="documents">
-  <li *ngFor="let document of documents">
-    <a href="{{document.fileURL}}"> {{document.id}} {{document.fileURL}}</a>
-  </li>
-</ul>
+<div *ngIf="documents">
+  <h3>Liste des justificatifs</h3>
+  <table class ="table">
+    <thead>
+      <th>Début de la période couverte</th>
+      <th>Fin de la période couverte</th>
+      <th>Type de période</th>
+      <th>URL du fichier</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let document of documents">
+        <td>{{document.startDate|date:'dd-MM-yyyy'}}</td>
+        <td>{{document.endDate|date:'dd-MM-yyyy'}}</td>
+        <td>{{document.daysCovered[0].type}}</td>
+        <td><a href="{{document.fileURL}}">{{document.fileURL}}</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
