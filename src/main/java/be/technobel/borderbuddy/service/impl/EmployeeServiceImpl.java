@@ -6,7 +6,9 @@ import be.technobel.borderbuddy.model.entity.Employee;
 import be.technobel.borderbuddy.model.form.RegisterForm;
 import be.technobel.borderbuddy.repository.EmployeeRepository;
 import be.technobel.borderbuddy.service.interfaces.EmployeeService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;

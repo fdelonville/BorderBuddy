@@ -13,8 +13,8 @@ const routes: Routes = [
   {path:'upload', component: UploadComponent},
   {path:'type', component: ChooseTypeComponent},
   {path:'docs', component: DisplayDocsComponent},
-  {path:'**',component: Page404Component},
   {path:'', component: AccueilComponent},
+  {path:'**',component: Page404Component},
 ];
 
 @NgModule({
