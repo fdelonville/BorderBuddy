@@ -6,6 +6,7 @@ import {UploadComponent} from "./components/upload/upload.component";
 import {ChooseTypeComponent} from "./components/choose-type/choose-type.component";
 import {DisplayDocsComponent} from "./components/display-docs/display-docs.component";
 import {Page404Component} from "./components/page404/page404.component";
+import {LogoutComponent} from "./components/logout/logout.component";
 
 const routes: Routes = [
   {path:'recap', component: DisplayMonthComponent},
@@ -13,6 +14,7 @@ const routes: Routes = [
   {path:'upload', component: UploadComponent},
   {path:'type', component: ChooseTypeComponent},
   {path:'docs', component: DisplayDocsComponent},
+  {path: 'logout', component: LogoutComponent},
   {path:'', component: AccueilComponent},
   {path:'**',component: Page404Component},
 ];

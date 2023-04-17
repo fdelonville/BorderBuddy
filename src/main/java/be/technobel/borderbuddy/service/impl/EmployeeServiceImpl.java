@@ -21,8 +21,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeDTO getOne(Long id) {
-        return EmployeeDTO.toDto(this.employeeRepository.findById(id).orElseThrow(NotFoundException::new));
+    public EmployeeDTO getOne(String login) {
+        return EmployeeDTO.toDto(this.employeeRepository.findByLogin(login).orElseThrow(NotFoundException::new));
     }
 
     @Override

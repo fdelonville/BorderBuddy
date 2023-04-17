@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 
 public interface EmployeeService {
-    EmployeeDTO getOne(Long id);
+    EmployeeDTO getOne(String login);
 
     void create(RegisterForm form);
 }
