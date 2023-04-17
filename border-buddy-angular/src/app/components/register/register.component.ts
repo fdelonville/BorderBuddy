@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {RegisterService} from "../../services/register.service";
+import {AuthService} from "../../services/auth.service";
 import {RegisterForm} from "../../models/register.form";
 
 @Component({
@@ -11,7 +11,8 @@ import {RegisterForm} from "../../models/register.form";
 export class RegisterComponent {
   form: FormGroup
   registerForm!: RegisterForm
-  constructor(private readonly registerService: RegisterService){
+  @Output() completeEmitter = new EventEmitter<null>
+  constructor(private readonly authService: AuthService){
     this.form = new FormGroup({
       'login': new FormControl('',[Validators.required,Validators.minLength(2)]),
       'password': new FormControl('',[Validators.required,Validators.minLength(2)]),
@@ -32,11 +33,12 @@ export class RegisterComponent {
         'lastName': tempForm.lastName,
         'email': tempForm.email,
       })
-      this.registerService.register(this.registerForm).subscribe(
+      this.authService.register(this.registerForm).subscribe(
         {
           next: () => {
             alert('Votre compte a bien été créé')
             this.form.reset()
+            this.completeEmitter.emit()
           }
         }
       )

@@ -12,7 +12,7 @@ public class RegisterForm {
     private final String login;
 
     @NotBlank
-    private final String password;
+    private String password;
 
     @NotBlank
     private final String firstName;

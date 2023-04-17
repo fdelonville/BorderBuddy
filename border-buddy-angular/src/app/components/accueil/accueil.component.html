@@ -1,6 +1,6 @@
-<h2>Bienvenue</h2>
+<h2 *ngIf="sessionStorage.getItem('username')"> Bienvenue {{sessionStorage.getItem('username')}}</h2>
 <br>
-<div *ngIf="!sessionStorage.getItem('user')">
+<div *ngIf="!sessionStorage.getItem('username')">
   <app-login (registerClickedEmitter)="toggle()" *ngIf="!showRegister"></app-login>
-  <app-register *ngIf="showRegister"></app-register>
+  <app-register *ngIf="showRegister" (completeEmitter)="toggle()"></app-register>
 </div>
