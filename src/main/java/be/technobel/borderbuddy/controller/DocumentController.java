@@ -70,12 +70,12 @@ public class DocumentController {
     }
 
     @PostMapping("/save")
-    public void saveFiletoDB(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate, @RequestParam String fileURL){
-        documentService.create(startDate,endDate,fileURL);
+    public void saveFiletoDB(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate, @RequestParam String fileURL, @RequestParam String login){
+        documentService.create(startDate,endDate,fileURL, login);
     }
 
-    @PostMapping("/display-period")
-    public List<DocumentDTO> displayDocsByPeriod(LocalDate startDate, LocalDate endDate){
-        return documentService.getAllBetweenDates(startDate, endDate);
+    @GetMapping("/display-period")
+    public List<DocumentDTO> displayDocsByPeriod(LocalDate startDate, LocalDate endDate, String login){
+        return documentService.getAllBetweenDates(startDate, endDate, login);
     }
 }

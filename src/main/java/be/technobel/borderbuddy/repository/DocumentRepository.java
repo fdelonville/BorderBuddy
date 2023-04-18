@@ -12,4 +12,6 @@ import java.util.Optional;
 public interface DocumentRepository extends JpaRepository<Document, Long> {
     Optional<List<Document>> findAllByStartDateBetween(LocalDate startDate, LocalDate endDate);
     Optional<List<Document>> findAllByStartDateBetweenAndEmployee(LocalDate startDate, LocalDate endDate, Employee employee);
+
+    Optional<Document> findByIdAndEmployee(Long id, Employee employee);
 }

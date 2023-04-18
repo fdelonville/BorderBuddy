@@ -9,21 +9,23 @@
         <li class="nav-item">
           <a class="nav-link" aria-current="page" routerLink="/accueil">Accueil</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/recap">Récapitulatif du mois</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/type">Donner un type à une période</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/upload">Ajouter un justificatif</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/docs">Afficher les justificatifs</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/logout">Se déconnecter</a>
-        </li>
+        <ng-container *ngIf="sessionStorage.getItem('username')">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/recap">Récapitulatif du mois</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/type">Donner un type à une période</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/upload">Ajouter un justificatif</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/docs">Afficher les justificatifs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/logout">Se déconnecter</a>
+          </li>
+        </ng-container>
       </ul>
     </div>
   </div>

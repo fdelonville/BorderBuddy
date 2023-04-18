@@ -18,19 +18,19 @@ public class MonthController {
     }
 
     @GetMapping("/display")
-    public MonthDTO displayByDate(@RequestParam LocalDate date){
-        return monthService.getOne(date.withDayOfMonth(1));
+    public MonthDTO displayByDate(@RequestParam LocalDate date, @RequestParam String login){
+        return monthService.getOne(date.withDayOfMonth(1),login);
     }
 
     @PostMapping("/new-month")
-    public void newMonth(@RequestParam LocalDate date){
-        monthService.create(date.withDayOfMonth(1));
+    public void newMonth(@RequestParam LocalDate date, @RequestParam String login){
+        monthService.create(date.withDayOfMonth(1),login);
     }
 
     @PostMapping("/new-period")
-    public void newPeriod(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate){
+    public void newPeriod(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate, @RequestParam String login){
         do{
-            monthService.create(startDate.withDayOfMonth(1));
+            monthService.create(startDate.withDayOfMonth(1),login);
             startDate = startDate.plusMonths(1);
         }while (startDate.isBefore(endDate));
     }

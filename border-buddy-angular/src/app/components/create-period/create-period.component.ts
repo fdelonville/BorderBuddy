@@ -12,6 +12,8 @@ export class CreatePeriodComponent {
   startDate!: string
   endDate!: string
   confirmation: string = ''
+  username = sessionStorage.getItem('username')
+  login = (this.username ? this.username : '')
 
   constructor(private readonly monthService : MonthService) {
     this.form = new FormGroup({
@@ -23,7 +25,7 @@ export class CreatePeriodComponent {
   onSubmit() {
     this.startDate = this.form.get('startDate')?.value
     this.endDate = this.form.get('endDate')?.value
-    this.monthService.createPeriod(this.startDate,this.endDate)
+    this.monthService.createPeriod(this.startDate,this.endDate,this.login)
       .subscribe(
         {
           next: () => {

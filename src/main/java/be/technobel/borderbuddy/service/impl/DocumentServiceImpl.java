@@ -5,8 +5,10 @@ import be.technobel.borderbuddy.model.Status;
 import be.technobel.borderbuddy.model.dto.DocumentDTO;
 import be.technobel.borderbuddy.model.entity.Day;
 import be.technobel.borderbuddy.model.entity.Document;
+import be.technobel.borderbuddy.model.entity.Employee;
 import be.technobel.borderbuddy.repository.DayRepository;
 import be.technobel.borderbuddy.repository.DocumentRepository;
+import be.technobel.borderbuddy.repository.EmployeeRepository;
 import be.technobel.borderbuddy.service.interfaces.DocumentService;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +21,17 @@ public class DocumentServiceImpl implements DocumentService {
     private final DocumentRepository documentRepository;
     private final DayRepository dayRepository;
 
-    public DocumentServiceImpl(DocumentRepository documentRepository, DayRepository dayRepository) {
+    private final EmployeeRepository employeeRepository;
+
+    public DocumentServiceImpl(DocumentRepository documentRepository, DayRepository dayRepository, EmployeeRepository employeeRepository) {
         this.documentRepository = documentRepository;
         this.dayRepository = dayRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     @Override
-    public void create(LocalDate startDate, LocalDate endDate, String fileURL) {
+    public void create(LocalDate startDate, LocalDate endDate, String fileURL, String login) {
+        Employee employee = employeeRepository.findByLogin(login).orElseThrow(NotFoundException::new);
         if(endDate==null)endDate = startDate;
         else if(endDate.isBefore(startDate)){
             LocalDate tempDate = startDate;
@@ -36,6 +42,7 @@ public class DocumentServiceImpl implements DocumentService {
         document.setStartDate(startDate);
         document.setEndDate(endDate);
         document.setFileURL(fileURL);
+        document.setEmployee(employee);
         documentRepository.save(document);
         List<Day> days = dayRepository.findAllByDayDateBetween(startDate, endDate).orElseThrow(NotFoundException::new);
         days.forEach(day -> {
@@ -50,13 +57,15 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public DocumentDTO getOne(Long id) {
-        return documentRepository.findById(id).map(DocumentDTO::toDto).orElseThrow(NotFoundException::new);
+    public DocumentDTO getOne(Long id, String login) {
+        Employee employee = employeeRepository.findByLogin(login).orElseThrow(NotFoundException::new);
+        return documentRepository.findByIdAndEmployee(id,employee).map(DocumentDTO::toDto).orElseThrow(NotFoundException::new);
     }
 
     @Override
-    public List<DocumentDTO> getAllBetweenDates(LocalDate startDate, LocalDate endDate) {
-        List<Document> list = documentRepository.findAllByStartDateBetween(startDate,endDate).orElseThrow(NotFoundException::new);
+    public List<DocumentDTO> getAllBetweenDates(LocalDate startDate, LocalDate endDate, String login) {
+        Employee employee = employeeRepository.findByLogin(login).orElseThrow(NotFoundException::new);
+        List<Document> list = documentRepository.findAllByStartDateBetweenAndEmployee(startDate,endDate,employee).orElseThrow(NotFoundException::new);
         return list.stream().map(DocumentDTO::toDto).toList();
     }
 }

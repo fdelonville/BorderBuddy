@@ -1,6 +1,7 @@
 package be.technobel.borderbuddy.model.form;
 
 import be.technobel.borderbuddy.model.Status;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -16,4 +17,7 @@ public class AssignStatusForm {
 
     @NotNull
     private Status status;
+
+    @NotBlank
+    private String login;
 }

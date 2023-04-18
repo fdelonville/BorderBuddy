@@ -1,8 +1,7 @@
 import {Component} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {HttpClient} from "@angular/common/http";
 import {FileDetails} from "../../models/file-details.model";
-import {UploadService} from "../../services/upload.service";
+import {DocumentService} from "../../services/document.service";
 
 @Component({
   selector: 'app-test-upload',
@@ -15,9 +14,10 @@ export class TestUploadComponent{
   fileDetails!: FileDetails
   fileUris: Array<string> = []
   form: FormGroup
+  login = sessionStorage.getItem('username')?.toString()
 
 
-  constructor(private uploadService : UploadService) {
+  constructor(private uploadService : DocumentService) {
     this.form = new FormGroup({
       'date1' : new FormControl('', Validators.required),
       'date2' : new FormControl('', Validators.required)
@@ -36,7 +36,8 @@ export class TestUploadComponent{
           this.fileUris.push(this.fileDetails.fileUri)
           let startDate: string = this.form.get('date1')?.value
           let endDate: string = this.form.get('date2')?.value
-          this.uploadService.save(startDate, endDate, this.fileUris[0]).subscribe({
+          if(this.login==undefined)this.login=''
+          this.uploadService.save(startDate, endDate, this.fileUris[0],this.login).subscribe({
             next: () => {
               alert("Fichier ajouté avec succès")
             }

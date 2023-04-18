@@ -18,4 +18,7 @@ public class AssignTypeForm {
 
     @NotNull
     private Type type;
+
+    @NotBlank
+    private String login;
 }

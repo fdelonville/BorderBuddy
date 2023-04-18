@@ -8,16 +8,13 @@ import {Month} from "../models/month.model";
 export class MonthService {
 
   constructor(private readonly httpClient: HttpClient) {}
-  getOne(date: string){
-    const params = new HttpParams().set('date',date)
+  getOne(date: string, login: string){
+    const params = new HttpParams().set('date',date).set('login',login)
     return this.httpClient.get<Month>('http://localhost:8080/api/month/display',{params})
   }
-  getCurrent(){
-    return this.httpClient.get<Month>('http://localhost:8080/api/month/current')
-  }
 
-  createPeriod(startDate: string, endDate: string){
-    const params = new HttpParams().set('startDate',startDate).set('endDate',endDate)
+  createPeriod(startDate: string, endDate: string, login: string){
+    const params = new HttpParams().set('startDate',startDate).set('endDate',endDate).set('login',login)
     return this.httpClient.post('http://localhost:8080/api/month/new-period',params)
   }
 }

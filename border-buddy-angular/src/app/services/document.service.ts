@@ -7,7 +7,7 @@ import {Justificatif} from "../models/justif.model";
 @Injectable({
   providedIn: 'root'
 })
-export class UploadService {
+export class DocumentService {
 
   private baseUrl = "http://localhost:8080/api/file"
   constructor(private httpClient: HttpClient) { }
@@ -18,14 +18,14 @@ export class UploadService {
     return this.httpClient.post<FileDetails>(`${this.baseUrl}/upload`, formData);
   }
 
-  save(startDate: string, endDate: string, fileURL: string){
-    const params = new HttpParams().set('startDate',startDate).set('endDate',endDate).set('fileURL', fileURL)
+  save(startDate: string, endDate: string, fileURL: string, login: string){
+    const params = new HttpParams().set('startDate',startDate).set('endDate',endDate).set('fileURL', fileURL).set('login',login)
     return this.httpClient.post(`${this.baseUrl}/save`, params)
   }
 
-  getBetweenDates(startDate: string, endDate: string):Observable<Justificatif[]> {
-    const params = new HttpParams().set('startDate',startDate).set('endDate',endDate)
-    return this.httpClient.post<Justificatif[]>(`${this.baseUrl}/display-period`, params)
+  getBetweenDates(startDate: string, endDate: string,login: string):Observable<Justificatif[]> {
+    const params = new HttpParams().set('startDate',startDate).set('endDate',endDate).set('login',login)
+    return this.httpClient.get<Justificatif[]>(`${this.baseUrl}/display-period`, {params})
   }
 
 }

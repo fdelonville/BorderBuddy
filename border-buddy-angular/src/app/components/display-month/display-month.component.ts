@@ -5,7 +5,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Day} from "../../models/day.model";
 import {DayService} from "../../services/day.service";
 import {Subscription} from "rxjs";
-import {UploadService} from "../../services/upload.service";
+import {DocumentService} from "../../services/document.service";
 import {FileDetails} from "../../models/file-details.model";
 
 @Component({
@@ -33,20 +33,24 @@ export class DisplayMonthComponent implements OnInit, OnDestroy {
   fileDetails!: FileDetails
   fileUris: Array<string> = []
   setToWeekend: boolean = false
+  username = sessionStorage.getItem('username')
+  login = (this.username ? this.username : '')
 
-  constructor(private readonly monthService : MonthService, private readonly dayService : DayService, private readonly uploadService: UploadService){
+  constructor(private readonly monthService : MonthService, private readonly dayService : DayService, private readonly uploadService: DocumentService){
     this.monthForm = new FormGroup({
       'date': new FormControl('',[Validators.required,Validators.minLength(7),Validators.maxLength(7)])
     })
     this.typeForm = new FormGroup({
       'startDate': new FormControl(),
       'endDate': new FormControl(),
-      'type': new FormControl('',Validators.required)
+      'type': new FormControl('',Validators.required),
+      'login': new FormControl()
     })
     this.statusForm = new FormGroup({
       'startDate': new FormControl('',Validators.required),
       'endDate': new FormControl('',Validators.required),
-      'status': new FormControl('',Validators.required)
+      'status': new FormControl('',Validators.required),
+      'login': new FormControl()
     })
   }
 
@@ -76,7 +80,7 @@ export class DisplayMonthComponent implements OnInit, OnDestroy {
   createAndDisplayPeriod(year: string): void{
     let firstDay: string = year + "-01-01"
     let lastDay: string = year + "-12-31"
-    let createMonthSub: Subscription = this.monthService.createPeriod(firstDay, lastDay).subscribe({
+    let createMonthSub: Subscription = this.monthService.createPeriod(firstDay, lastDay, this.login).subscribe({
       next:()=> {
         if(!this.monthForm.get('date')?.value){
           this.getMonth(this.today)
@@ -95,7 +99,7 @@ export class DisplayMonthComponent implements OnInit, OnDestroy {
     this.loading = true
     this.error = true
     this.emptyBeginning = []
-    let getMonthSub: Subscription = this.monthService.getOne(date).subscribe(
+    let getMonthSub: Subscription = this.monthService.getOne(date, this.login).subscribe(
       {next:(m:Month) => {
           this.month = m
           this.month.days.sort((a,b) => (a.id > b.id) ? 1 : -1)
@@ -165,7 +169,8 @@ export class DisplayMonthComponent implements OnInit, OnDestroy {
       if(!this.clickedDate2) this.clickedDate2 = this.clickedDate1
       this.typeForm.patchValue({
         'startDate': this.clickedDate1,
-        'endDate': this.clickedDate2
+        'endDate': this.clickedDate2,
+        'login': this.login
       })
       let setTypeSub: Subscription = this.dayService.assignType(this.typeForm.value).subscribe({next:()=> {
           if(this.file){
@@ -180,7 +185,7 @@ export class DisplayMonthComponent implements OnInit, OnDestroy {
                   date2 = this.clickedDate2.toISOString().substring(0,10)
                 }
 
-                let saveFileToDBSub: Subscription = this.uploadService.save(date1, date2, this.fileUris[0]).subscribe({
+                let saveFileToDBSub: Subscription = this.uploadService.save(date1, date2, this.fileUris[0], this.login).subscribe({
                   next: () => {
                     alert("Fichier ajouté avec succès")
                     this.typeForm.reset()
@@ -216,7 +221,8 @@ export class DisplayMonthComponent implements OnInit, OnDestroy {
     this.statusForm.patchValue({
       'startDate': this.clickedDate1,
       'endDate': this.clickedDate2,
-      'status': "PUBLIC_HOLIDAY_OR_WEEKEND"
+      'status': "PUBLIC_HOLIDAY_OR_WEEKEND",
+      'login': this.login
     })
     let setStatusSub: Subscription = this.dayService.assignStatus(this.statusForm.value).subscribe(
       {

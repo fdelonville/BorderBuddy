@@ -2,6 +2,7 @@ package be.technobel.borderbuddy.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -32,7 +33,16 @@ public class WebSecurityConfig {
 
         http.authorizeHttpRequests(
                 registry ->
-                        registry.anyRequest().permitAll()
+                        registry
+                                .requestMatchers(HttpMethod.GET,"/api/month/**").authenticated()
+                                .requestMatchers(HttpMethod.POST,"/api/month/**").authenticated()
+                                .requestMatchers(HttpMethod.GET,"/api/day/**").authenticated()
+                                .requestMatchers(HttpMethod.POST,"/api/day/**").authenticated()
+                                .requestMatchers(HttpMethod.GET,"/api/file/**").authenticated()
+                                .requestMatchers(HttpMethod.POST,"/api/file/**").authenticated()
+                                .requestMatchers("/api/auth/login").anonymous()
+                                .requestMatchers("/api/register").anonymous()
+                                .anyRequest().permitAll()
         );
         return http.build();
     }

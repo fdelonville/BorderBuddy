@@ -14,12 +14,15 @@ export class ChooseTypeComponent implements OnInit, OnDestroy {
   types!: string[]
   assignType!: Subscription
   getType!: Subscription
+  username = sessionStorage.getItem('username')
+  login = (this.username ? this.username : '')
 
   constructor(private readonly dayService: DayService){
     this.form = new FormGroup({
       'startDate' : new FormControl('',Validators.required),
       'endDate' : new FormControl('',Validators.required),
-      'type': new FormControl('',Validators.required)
+      'type': new FormControl('',Validators.required),
+      'login': new FormControl()
     })
   }
 
@@ -34,6 +37,7 @@ export class ChooseTypeComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if(this.form.valid){
+      this.form.patchValue({'login':this.login})
       this.assignType = this.dayService.assignType(this.form.value).subscribe({next:()=> {
         this.form.reset()
         }

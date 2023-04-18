@@ -5,6 +5,7 @@ import be.technobel.borderbuddy.model.Status;
 import be.technobel.borderbuddy.model.Type;
 import be.technobel.borderbuddy.model.dto.DayDTO;
 import be.technobel.borderbuddy.model.entity.Day;
+import be.technobel.borderbuddy.model.entity.Employee;
 import be.technobel.borderbuddy.model.entity.Month;
 import be.technobel.borderbuddy.repository.DayRepository;
 import be.technobel.borderbuddy.service.interfaces.DayService;
@@ -26,19 +27,10 @@ public class DayServiceImpl implements DayService {
     }
 
     @Override
-    public List<DayDTO> getAllBetweenDates(LocalDate date1, LocalDate date2) {
-        return null;
-    }
-
-    @Override
-    public List<DayDTO> getAllIncomplete() {
-        return null;
-    }
-
-    @Override
-    public Day create(LocalDate date, Month month) {
+    public Day create(LocalDate date, Month month, Employee employee) {
         Day day = new Day();
         day.setDayDate(date);
+        day.setEmployee(employee);
         if(date.getDayOfWeek().equals(DayOfWeek.SATURDAY)||date.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
             day.setStatus(Status.PUBLIC_HOLIDAY_OR_WEEKEND);
         }

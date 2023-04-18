@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {UploadService} from "../../services/upload.service";
+import {DocumentService} from "../../services/document.service";
 import {Justificatif} from "../../models/justif.model";
 import {FormControl, FormGroup} from "@angular/forms";
 
@@ -13,8 +13,10 @@ export class DisplayDocsComponent {
   endDate!: string
   documents?: Justificatif[]
   form: FormGroup
+  username = sessionStorage.getItem('username')
+  login = (this.username ? this.username : '')
 
-  constructor(private readonly uploadService: UploadService) {
+  constructor(private readonly uploadService: DocumentService) {
     this.form = new FormGroup({
       'startDate': new FormControl(),
       'endDate': new FormControl()
@@ -27,7 +29,7 @@ export class DisplayDocsComponent {
 
   displayAll(){
     this.endDate = this.form.get('endDate')?.value
-    this.uploadService.getBetweenDates(this.startDate,this.endDate).subscribe({
+    this.uploadService.getBetweenDates(this.startDate,this.endDate,this.login).subscribe({
       next:(docs) => this.documents = docs
     })
   }
