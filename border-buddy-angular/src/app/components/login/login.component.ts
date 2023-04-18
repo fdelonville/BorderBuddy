@@ -11,19 +11,20 @@ import {LoginForm} from "../../models/login.form";
 })
 export class LoginComponent {
   form: FormGroup
+  errorMessage?: string
   @Output() registerClickedEmitter = new EventEmitter<null>
   constructor(private readonly authService: AuthService, private router: Router){
     this.form = new FormGroup({
-      'login': new FormControl('',[Validators.required,Validators.minLength(2)]),
-      'password': new FormControl('',[Validators.required,Validators.minLength(2)])
+      'login': new FormControl('',[Validators.required]),
+      'password': new FormControl('',[Validators.required])
     })
   }
 
   onSubmit() {
-    if(this.form.valid) console.log('ok')
+    if(this.form.valid) {
       let tempForm = this.form.value
       let loginForm: LoginForm =({
-        'login': tempForm.login,
+          'login': tempForm.login,
           'password': tempForm.password,
         }
       )
@@ -31,9 +32,16 @@ export class LoginComponent {
           sessionStorage.setItem('token',r.token)
           sessionStorage.setItem('roles', r.roles)
           sessionStorage.setItem('username', r.username)
+          this.errorMessage = undefined
           window.location.reload()
+        },
+        error: () => {
+        this.errorMessage = "Mauvais nom d'utilisateur ou mot de passe"
         }
       })
+    }
+    else this.errorMessage = "Les champs ne peuvent pas être vides."
+
   }
 
   onClickRegister(){

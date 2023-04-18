@@ -1,15 +1,18 @@
 <br>
 <h2>Afficher les justificatifs correspondant à une période :</h2>
 <br>
-<form [formGroup]="form">
-<label for="date1">Début de la période couverte :</label>
-<input type="date" id = "date1" formControlName="startDate" (change)="selectStartDate()">
-<br>
-<label for="date2">Fin de la période couverte :</label>
-<input type="date" id = "date2" formControlName="endDate" (change)="displayAll()">
+<form [formGroup]="form" (ngSubmit)="displayAll()">
+  <label for="date1">Début de la période couverte :</label>
+  <input type="date" id = "date1" formControlName="startDate">
+  <br>
+  <label for="date2">Fin de la période couverte :</label>
+  <input type="date" id = "date2" formControlName="endDate">
+  <br>
+  <button type="submit" class ="btn btn-primary">Confirmer</button>
 </form>
 <br>
-<div *ngIf="documents">
+<h5 *ngIf="errorMessage" class="error-message"> {{errorMessage}} </h5>
+<div *ngIf="documents && !errorMessage">
   <h3>Liste des justificatifs</h3>
   <table class ="table">
     <thead>
@@ -18,6 +21,7 @@
       <th>Type de période</th>
       <th>URL du fichier</th>
     </thead>
+
     <tbody>
       <tr *ngFor="let document of documents">
         <td>{{document.startDate|date:'dd-MM-yyyy'}}</td>

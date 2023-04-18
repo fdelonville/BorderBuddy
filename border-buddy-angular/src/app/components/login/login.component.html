@@ -11,6 +11,7 @@
   <input type="password" id ="password" formControlName = "password">
   <br>
   <br>
+  <h5 *ngIf="errorMessage" class="error-message"> {{errorMessage}} </h5>
   <input type="submit" class="btn btn-primary" value="Se connecter">
 </form>
 <br>

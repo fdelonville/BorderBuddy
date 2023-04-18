@@ -14,6 +14,7 @@ export class ChooseTypeComponent implements OnInit, OnDestroy {
   types!: string[]
   assignType!: Subscription
   getType!: Subscription
+  errorMessage?: string
   username = sessionStorage.getItem('username')
   login = (this.username ? this.username : '')
 
@@ -39,10 +40,13 @@ export class ChooseTypeComponent implements OnInit, OnDestroy {
     if(this.form.valid){
       this.form.patchValue({'login':this.login})
       this.assignType = this.dayService.assignType(this.form.value).subscribe({next:()=> {
-        this.form.reset()
-        }
+          this.form.reset()
+          this.errorMessage = undefined
+        },
+        error: () => this.errorMessage = "Erreur : le type n'a pas pu être modifié."
       })
     }
+    else this.errorMessage = "Tous les champs doivent être remplis."
   }
 
   ngOnDestroy(): void {

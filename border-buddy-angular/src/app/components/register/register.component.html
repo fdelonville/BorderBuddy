@@ -2,33 +2,38 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <label for="firstName">Prénom :</label>
   <br>
-  <input type="text" id="firstName" formControlName="firstName">
+  <input type="text" id="firstName" formControlName="firstName" placeholder="Entrer un prénom">
   <br>
   <br>
   <label for="lastName">Nom :</label>
   <br>
-  <input type="text" id="lastName" formControlName="lastName">
+  <input type="text" id="lastName" formControlName="lastName" placeholder="Entrer un nom">
   <br>
   <br>
   <label for="login">Nom d'utilisateur :</label>
   <br>
-  <input type="text" id="login" formControlName="login">
+  <input type="text" id="login" formControlName="login" placeholder="Entrer un nom d'utilisateur">
   <br>
   <br>
   <label for="password">Mot de passe :</label>
   <br>
-  <input type="password" id="password" formControlName="password">
+  <input type="password" id="password" formControlName="password" placeholder="Entrer un mot de passe">
   <br>
   <br>
   <label for="password">Confirmer le mot de passe :</label>
   <br>
-  <input type="password" id="confirm" formControlName="confirm">
+  <input type="password" id="confirm" formControlName="confirm" placeholder="Confirmation du mot de passe">
   <br>
   <br>
   <label for="email">Adresse mail :</label>
   <br>
-  <input type="text" id="email" formControlName="email">
+  <input type="text" id="email" formControlName="email" placeholder="Entrer une adresse mail">
   <br>
   <br>
   <input type="submit" class = "btn btn-primary" value = "Envoyer">
+  <br>
+  <br>
+  <h5 *ngIf="errorMessage" class="error-message"> {{errorMessage}} </h5>
+  <br>
+  <button class="btn btn-secondary btn-sm" (click)="onBack()">Retour à l'accueil</button>
 </form>

@@ -11,11 +11,9 @@ import { DisplayMonthComponent } from './components/display-month/display-month.
 import { HeaderComponent } from './components/header/header.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {ReactiveFormsModule} from "@angular/forms";
-import { CreatePeriodComponent } from './components/create-period/create-period.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { UploadComponent } from './components/upload/upload.component';
 import { ChooseTypeComponent } from './components/choose-type/choose-type.component';
-import { TestUploadComponent } from './components/test-upload/test-upload.component';
+import { UploadComponent } from './components/upload/upload.component';
 import { DisplayDocsComponent } from './components/display-docs/display-docs.component';
 import { Page404Component } from './components/page404/page404.component';
 import { LoginComponent } from './components/login/login.component';
@@ -29,11 +27,9 @@ import {JwtInterceptor} from "./interceptors/jwt.interceptor";
     AccueilComponent,
     DisplayMonthComponent,
     HeaderComponent,
-    CreatePeriodComponent,
     FooterComponent,
-    UploadComponent,
     ChooseTypeComponent,
-    TestUploadComponent,
+    UploadComponent,
     DisplayDocsComponent,
     Page404Component,
     LoginComponent,

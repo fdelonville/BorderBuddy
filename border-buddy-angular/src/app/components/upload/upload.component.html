@@ -1,2 +1,16 @@
 <br>
-<app-test-upload></app-test-upload>
+<h2>Mettre en ligne un justificatif</h2>
+<label>Choisir un fichier: </label>
+<br>
+<input type="file" (change)="selectFile($event)" />
+<br>
+<br>
+<form [formGroup]="form">
+  <label for="date1">Premier jour couvert</label>
+  <input type="date" id = "date1" formControlName="date1">
+  <br>
+  <label for="date2">Dernier jour couvert</label>
+  <input type="date" id = "date2" formControlName="date2">
+</form>
+<br>
+<button class="btn btn-primary" (click)="uploadFile()">Ajouter</button>
