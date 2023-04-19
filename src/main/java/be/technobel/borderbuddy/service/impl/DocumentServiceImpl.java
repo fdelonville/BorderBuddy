@@ -44,7 +44,7 @@ public class DocumentServiceImpl implements DocumentService {
         document.setFileURL(fileURL);
         document.setEmployee(employee);
         documentRepository.save(document);
-        List<Day> days = dayRepository.findAllByDayDateBetween(startDate, endDate).orElseThrow(NotFoundException::new);
+        List<Day> days = dayRepository.findAllByDayDateBetweenAndEmployee(startDate, endDate, employee).orElseThrow(NotFoundException::new);
         days.forEach(day -> {
             if(day.getStatus()!=Status.PUBLIC_HOLIDAY_OR_WEEKEND) {
                 day.setStatus(Status.VALID);

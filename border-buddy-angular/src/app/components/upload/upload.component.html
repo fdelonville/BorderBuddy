@@ -1,16 +1,23 @@
 <br>
 <h2>Mettre en ligne un justificatif</h2>
-<label>Choisir un fichier: </label>
-<br>
-<input type="file" (change)="selectFile($event)" />
-<br>
 <br>
 <form [formGroup]="form">
-  <label for="date1">Premier jour couvert</label>
-  <input type="date" id = "date1" formControlName="date1">
-  <br>
-  <label for="date2">Dernier jour couvert</label>
-  <input type="date" id = "date2" formControlName="date2">
+  <div class = "mb-3">
+    <label class="form-label">Choisir un fichier: </label>
+    <br>
+    <input type="file" (change)="selectFile($event)" formControlName="file">
+    <br>
+    <br>
+    <label for="date1" class="form-label">Premier jour couvert</label>
+    <br>
+    <input type="date" id = "date1" formControlName="date1">
+    <br>
+    <label for="date2" class="form-label">Dernier jour couvert</label>
+    <br>
+    <input type="date" id = "date2" formControlName="date2">
+    <br>
+    <br>
+    <button class="btn btn-primary" (click)="uploadFile()">Ajouter</button>
+  </div>
 </form>
-<br>
-<button class="btn btn-primary" (click)="uploadFile()">Ajouter</button>
+<h5 class="error-message" *ngIf="errorMessage"> {{errorMessage}} </h5>

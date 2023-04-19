@@ -17,7 +17,6 @@ export class DisplayMonthComponent implements OnInit, OnDestroy {
 
   month!: Month
   loading!: boolean
-  error!: boolean
   today: string = new Date(Date.now()).toISOString().substring(0,10)
   startPosition!: number
   emptyBeginning: string[] = []
@@ -35,6 +34,7 @@ export class DisplayMonthComponent implements OnInit, OnDestroy {
   setToWeekend: boolean = false
   username = sessionStorage.getItem('username')
   login = (this.username ? this.username : '')
+  globalErrorMessage?: string = undefined
 
   constructor(private readonly monthService : MonthService, private readonly dayService : DayService, private readonly uploadService: DocumentService){
     this.monthForm = new FormGroup({
@@ -86,10 +86,11 @@ export class DisplayMonthComponent implements OnInit, OnDestroy {
           this.getMonth(this.today)
         }
         else this.onSubmitMonth()
+        this.globalErrorMessage = undefined
       },
       error:() => {
         this.loading = false
-        this.error = true
+        this.globalErrorMessage ="Erreur : problème d'accès à la base de données"
       }
     })
     this.subscriptions.push(createMonthSub)
@@ -97,7 +98,6 @@ export class DisplayMonthComponent implements OnInit, OnDestroy {
 
   getMonth(date: string): void{
     this.loading = true
-    this.error = true
     this.emptyBeginning = []
     let getMonthSub: Subscription = this.monthService.getOne(date, this.login).subscribe(
       {next:(m:Month) => {
@@ -108,7 +108,6 @@ export class DisplayMonthComponent implements OnInit, OnDestroy {
           if(this.startPosition === 0) this.startPosition = 7
           this.splitMonth()
           this.loading = false
-          this.error = false
         },
         error:()=> {
           this.createAndDisplayPeriod(date.substring(0, 4))
@@ -246,7 +245,7 @@ export class DisplayMonthComponent implements OnInit, OnDestroy {
     this.file = event.target.files.item(0)
   }
 
-  setPeriodToWeekend() {
+  toggleSetToWeekend() {
     this.setToWeekend = !this.setToWeekend;
   }
 }

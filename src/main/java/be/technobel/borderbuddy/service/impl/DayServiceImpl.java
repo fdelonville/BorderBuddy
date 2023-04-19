@@ -55,9 +55,9 @@ public class DayServiceImpl implements DayService {
     }
 
     @Override
-    public void setDayRangeType(LocalDate date1, LocalDate date2, Type type) {
+    public void setDayRangeType(LocalDate date1, LocalDate date2, Type type, Employee employee) {
         processDates(date1,date2);
-        List<Day> dayList = dayRepository.findAllByDayDateBetween(date1, date2).orElseThrow(NotFoundException::new);
+        List<Day> dayList = dayRepository.findAllByDayDateBetweenAndEmployee(date1, date2,employee).orElseThrow(NotFoundException::new);
         dayList.forEach(day -> {
             if((day.getStatus()!= Status.VALID) && (day.getStatus() != Status.PUBLIC_HOLIDAY_OR_WEEKEND)){
                 day.setType(type);
@@ -68,9 +68,9 @@ public class DayServiceImpl implements DayService {
     }
 
     @Override
-    public void setDayRangeStatus(LocalDate date1, LocalDate date2, Status status) {
+    public void setDayRangeStatus(LocalDate date1, LocalDate date2, Status status, Employee employee) {
         processDates(date1,date2);
-        List<Day> dayList = dayRepository.findAllByDayDateBetween(date1, date2).orElseThrow(NotFoundException::new);
+        List<Day> dayList = dayRepository.findAllByDayDateBetweenAndEmployee(date1, date2, employee).orElseThrow(NotFoundException::new);
         dayList.forEach(day -> {
             if((day.getStatus()!= Status.VALID)){
                 day.setStatus(status);

@@ -14,13 +14,16 @@ export class UploadComponent {
   fileDetails!: FileDetails
   fileUris: Array<string> = []
   form: FormGroup
-  login = sessionStorage.getItem('username')?.toString()
+  username = sessionStorage.getItem('username')
+  login = (this.username ? this.username : '')
+  errorMessage!: string
 
 
   constructor(private uploadService : DocumentService) {
     this.form = new FormGroup({
       'date1' : new FormControl('', Validators.required),
-      'date2' : new FormControl('', Validators.required)
+      'date2' : new FormControl('', Validators.required),
+      'file': new FormControl('',Validators.required)
     })
   }
 
@@ -36,17 +39,16 @@ export class UploadComponent {
           this.fileUris.push(this.fileDetails.fileUri)
           let startDate: string = this.form.get('date1')?.value
           let endDate: string = this.form.get('date2')?.value
-          if(this.login==undefined)this.login=''
           this.uploadService.save(startDate, endDate, this.fileUris[0],this.login).subscribe({
             next: () => {
               alert("Fichier ajouté avec succès")
-            }
+            },
+            error: () => this.errorMessage = "Le justificatif n'a pas pu être ajouté à la base de données."
           })
         },
-        error: (e) => {
-          console.log(e)
-        }
+        error: (e) => this.errorMessage = "Le fichier n'a pas pu être téléchargé."
       })
     }
+    else this.errorMessage = "Tous les champs doivent être renseignés."
   }
 }

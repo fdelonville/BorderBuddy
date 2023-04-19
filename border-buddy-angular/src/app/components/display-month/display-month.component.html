@@ -1,5 +1,5 @@
 <h2 *ngIf="loading">Chargement...</h2>
-<div *ngIf="!loading && !error">
+<div *ngIf="!loading && !globalErrorMessage">
   <div class="container-fluid">
     <div class="row">
       <div class="col-6">
@@ -58,7 +58,7 @@
         </table>
         <form *ngIf="clickedDate1" [formGroup]="typeForm" (ngSubmit)="setToWeekend? onSubmitStatus() : onSubmitType()">
           <h5>Donner un type aux jours sélectionnés</h5>
-          <input type="checkbox" id ="status" (change)="setPeriodToWeekend()">
+          <input type="checkbox" id ="status" (change)="toggleSetToWeekend()">
           <label for="status">La période sélectionnée est fériée</label>
           <div *ngIf="!setToWeekend">
             <br>
@@ -93,7 +93,7 @@
     </div>
   </div>
 </div>
-<div *ngIf="error && !loading">
-  <h2>Erreur : mois inexistant</h2>
+<div *ngIf="globalErrorMessage && !loading">
+  <h4 class ="error-message"> {{globalErrorMessage}} </h4>
   <button routerLink="/accueil" class = "btn btn-secondary">Retour à l'accueil</button>
 </div>

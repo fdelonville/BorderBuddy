@@ -41,6 +41,7 @@ export class ChooseTypeComponent implements OnInit, OnDestroy {
       this.form.patchValue({'login':this.login})
       this.assignType = this.dayService.assignType(this.form.value).subscribe({next:()=> {
           this.form.reset()
+          alert("La période choisie a bien été modifiée.")
           this.errorMessage = undefined
         },
         error: () => this.errorMessage = "Erreur : le type n'a pas pu être modifié."
