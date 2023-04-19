@@ -40,8 +40,8 @@ public class WebSecurityConfig {
                                 .requestMatchers(HttpMethod.POST,"/api/day/**").authenticated()
                                 .requestMatchers(HttpMethod.GET,"/api/file/**").authenticated()
                                 .requestMatchers(HttpMethod.POST,"/api/file/**").authenticated()
-                                .requestMatchers("/api/auth/login").anonymous()
-                                .requestMatchers("/api/register").anonymous()
+                                .requestMatchers(HttpMethod.POST,"/api/auth/login").anonymous()
+                                .requestMatchers(HttpMethod.POST,"/api/register").anonymous()
                                 .anyRequest().permitAll()
         );
         return http.build();

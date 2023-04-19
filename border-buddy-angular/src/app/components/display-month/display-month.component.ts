@@ -143,6 +143,7 @@ export class DisplayMonthComponent implements OnInit, OnDestroy {
       else if(this.clickedDate1 == day.dayDate && this.clickedDate2 == undefined){
         this.clickedDate1 = undefined
         day.selected = false
+        this.typeForm.reset()
       }
       else if (this.clickedDate2 == undefined) {
         this.clickedDate2 = day.dayDate
