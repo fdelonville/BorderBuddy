@@ -7,14 +7,15 @@ import {ChooseTypeComponent} from "./components/choose-type/choose-type.componen
 import {DisplayDocsComponent} from "./components/display-docs/display-docs.component";
 import {Page404Component} from "./components/page404/page404.component";
 import {LogoutComponent} from "./components/logout/logout.component";
+import {LoggedInGuard} from "./guards/logged-in.guard";
 
 const routes: Routes = [
-  {path:'recap', component: DisplayMonthComponent},
+  {path:'recap', component: DisplayMonthComponent, canActivate:[LoggedInGuard]},
   {path:'accueil', component: AccueilComponent},
-  {path:'upload', component: UploadComponent},
-  {path:'type', component: ChooseTypeComponent},
-  {path:'docs', component: DisplayDocsComponent},
-  {path: 'logout', component: LogoutComponent},
+  {path:'upload', component: UploadComponent, canActivate:[LoggedInGuard]},
+  {path:'type', component: ChooseTypeComponent, canActivate:[LoggedInGuard]},
+  {path:'docs', component: DisplayDocsComponent, canActivate:[LoggedInGuard]},
+  {path: 'logout', component: LogoutComponent, canActivate:[LoggedInGuard]},
   {path:'', component: AccueilComponent},
   {path:'**',component: Page404Component},
 ];
